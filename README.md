@@ -1,23 +1,18 @@
-# alumnos
-Sistema de Alumnos del Colegio
+# Salesforce DX Project: Next Steps
 
-## Modulos
+Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
 
-1. [**Padron**]: El sistema tiene como modulo base el padron de alumnos. Este se crea sobre el objeto Contactos con un Record Type.
-2. [**Programa de Estudios**]: Carga inicial de docentes, programa de materias, y asignacion de alumnos a los cursos
-3. [**Asistencias**]: El registro periodico de asistencias de los chicos a clases
-4. [**Boletines**]: El registro de notas y seguimiento de los alumnos.
+## How Do You Plan to Deploy Your Changes?
 
+Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
 
-## Procesos
+## Configure Your Salesforce DX Project
 
-### Configuracion Inicial
- 
+The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
 
-### Inscripciones
+## Read All About It
 
-### Carga de Asistencias 
-
-### Carga de Notas
-
-### Generacion de Boletines
+- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
+- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
+- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
+- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
