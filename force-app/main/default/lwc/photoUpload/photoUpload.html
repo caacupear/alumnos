@@ -1,0 +1,16 @@
+<template>
+    <lightning-file-upload 
+        name="fileUploader"
+        accept={acceptedFormats}
+        record-id={recordId}
+        onuploadfinished={handleUploadFinished}
+        multiple>
+    </lightning-file-upload>
+     <template if:true={newFileWasUploaded}>
+        <template for:each={uploadedFilesUrl} for:item="file">
+            <div key={file.id}>
+                <img src={file.id}/>
+            </div>
+        </template>  
+     </template>  
+  </template>

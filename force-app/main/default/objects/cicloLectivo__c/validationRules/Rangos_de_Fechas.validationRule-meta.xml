@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rangos_de_Fechas</fullName>
+    <active>true</active>
+    <errorConditionFormula>fin__c &lt; inicio__c</errorConditionFormula>
+    <errorDisplayField>fin__c</errorDisplayField>
+    <errorMessage>La fecha fin debe ser mayor a la fecha de inicio</errorMessage>
+</ValidationRule>

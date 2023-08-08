@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Asistencia__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( ISPICKVAL(Lunes__c,&apos;Falto&apos;), 1, IF(ISPICKVAL( Lunes__c,  &apos;Tarde&apos;), 0.5,0))
++IF( ISPICKVAL(Martes__c,&apos;Falto&apos;), 1, IF(ISPICKVAL( Martes__c,  &apos;Tarde&apos;), 0.5,0))
++IF( ISPICKVAL(Miercoles__c,&apos;Falto&apos;), 1, IF(ISPICKVAL( Miercoles__c,  &apos;Tarde&apos;), 0.5,0))
++IF( ISPICKVAL(Jueves__c,&apos;Falto&apos;), 1, IF(ISPICKVAL( Jueves__c,  &apos;Tarde&apos;), 0.5,0))
++IF( ISPICKVAL(Viernes__c,&apos;Falto&apos;), 1, IF(ISPICKVAL( Viernes__c,  &apos;Tarde&apos;), 0.5,0))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Asistencia</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

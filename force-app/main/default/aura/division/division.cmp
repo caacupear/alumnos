@@ -1,0 +1,66 @@
+<aura:component controller="DivisionController" implements="lightning:actionOverride,force:hasRecordId,force:hasSObjectName,lightning:isUrlAddressable">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>  
+    <aura:attribute name="record" type="Object" />
+    <aura:attribute name="componentRecord" type="Object" />
+    <aura:attribute name="recordError" type="String" />
+    <aura:attribute name="ciclosVigentes" type="Object[]" />
+
+    <force:recordData 
+        aura:id="recordLoader" 
+        recordId="{!v.recordId}" 
+        layoutType="FULL" 
+        mode="EDIT"
+        targetRecord="{!v.record}"
+        targetFields="{!v.componentRecord}"
+        targetError="{!v.recordError}" />
+        
+    <div class="slds-page-header">
+        <div class="slds-media">
+            <div class="slds-media__figure">
+                <lightning:icon iconName="custom:custom67" />
+            </div>
+            <div class="slds-media__body">
+                <p class="slds-text-body_small slds-line-height_reset">Division</p>
+                <h1 class="slds-page-header__title slds-truncate slds-align-middle" 
+                   title="{!v.componentRecord.Name}">{!v.componentRecord.Name}</h1>
+            </div>
+            <lightning:buttonGroup>            
+                <lightning:button label="Save" onclick="{!c.onSave}" />
+                <lightning:button label="Cancel" onclick="{!c.onCancel}" />
+            </lightning:buttonGroup>
+        </div>
+    </div>
+    
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+        <ui:message title="Error" severity="error">
+            {!v.recordError}
+        </ui:message>
+    </aura:if>
+    <lightning:layout>
+        <lightning:layoutitem padding="around-small">
+            <lightning:select aura:id="cicloLectivo" value="{!v.componentRecord.cicloLectivo__c}"  name="cicloLectivo" label="Ciclo Lectivo" required="true">
+                <option text="Seleccione un ciclo"></option>
+                <aura:iteration items="{!v.ciclosVigentes}" var="i" indexVar="key">
+                    <option text="{!i.value}" value="{!i.key}" selected="{!i.key==v.componentRecord.cicloLectivo__c}" />
+                </aura:iteration>
+            </lightning:select>
+        </lightning:layoutitem>
+        <lightning:layoutitem padding="around-small">
+            <lightning:input 
+                name="anoEscolar"
+                label="Año Escolar"
+                type="text"
+                size="6" 
+                value="{!v.componentRecord.anoEscolar__c}"/>
+        </lightning:layoutitem>
+        <lightning:layoutitem padding="around-small">
+            <lightning:input
+                name="subdivision" 
+                label="Subdivision"
+                type="text"
+                size="6"
+                value="{!v.componentRecord.subdivision__c}"/>
+        </lightning:layoutitem>
+    </lightning:layout>
+
+</aura:component>

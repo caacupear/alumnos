@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Proximos__c</fullName>
+    <externalId>false</externalId>
+    <formula>inicio__c &gt; Today()</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Proximos</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
