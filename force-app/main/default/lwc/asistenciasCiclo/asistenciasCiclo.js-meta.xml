@@ -6,5 +6,12 @@
         <target>lightning__AppPage</target>
         <target>lightning__HomePage</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>CicloLectivo__c</object>
+            </objects>
+        </targetConfig>
+    </targetConfigs>
     <isExposed>true</isExposed>
 </LightningComponentBundle>

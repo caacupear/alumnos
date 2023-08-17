@@ -1,16 +1,11 @@
 <template>
-    <lightning-file-upload 
+    <template if:true={hasImage}>
+        <img src={image} class={disabledClass}/>
+    </template>
+    <lightning-file-upload disabled={disableUpload}
         name="fileUploader"
         accept={acceptedFormats}
         record-id={recordId}
-        onuploadfinished={handleUploadFinished}
-        multiple>
+        onuploadfinished={handleUploadFinished}>
     </lightning-file-upload>
-     <template if:true={newFileWasUploaded}>
-        <template for:each={uploadedFilesUrl} for:item="file">
-            <div key={file.id}>
-                <img src={file.id}/>
-            </div>
-        </template>  
-     </template>  
-  </template>
+</template>

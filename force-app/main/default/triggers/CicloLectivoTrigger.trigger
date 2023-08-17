@@ -1,7 +1,8 @@
-trigger BoletinTrigger on Boletin__c (before insert,before update, before delete, 
+trigger CicloLectivoTrigger on CicloLectivo__c (before insert,before update, before delete, 
     after insert, after update, after delete,after undelete) {
 
-    TriggerHandler handler = new BoletinTriggerHandler(Trigger.isExecuting, Trigger.size);
+    TriggerHandler handler = new CicloLectivoTriggerHandler(Trigger.isExecuting, Trigger.size);
+
         switch on Trigger.operationType {
         when BEFORE_INSERT {
             handler.beforeInsert(Trigger.new);

@@ -1,21 +1,24 @@
 public with sharing class AsistenciasController {
 
     @AuraEnabled(cacheable=true)
-    public static List<Boletin__c> getAsistencias( Id divisionId, Integer semana){
-        try {
-            if ( semana == 0 ) {
-                semana = Math.ceil(Date.Today().dayOfYear() / 7).intValue();
-            }
-            
-            return [SELECT nombreAlumno__c, 
-                    (SELECT Id, Lunes__c, Martes__c, Miercoles__c, Jueves__c, Viernes__c 
-                    FROM Asistencias__r 
-                    WHERE Semana__c = :semana )  
-                FROM Boletin__c 
-                WHERE Division__c = :divisionId];
-            
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
-        }
+    public static AsistenciasHelper.AsistenciasCiclo getAsistenciasCiclo( Id cicloId){
+        return new AsistenciasHelper.AsistenciasCiclo(cicloId);
     }
+
+    @AuraEnabled(cacheable=true)
+    public static AsistenciasHelper.AsistenciasDivision getAsistenciasDivision( Id divisionId, Integer semana){
+        return  new AsistenciasHelper.AsistenciasDivision(divisionId, semana);        
+    }   
+    
+    @AuraEnabled(cacheable=true)
+    public static AsistenciasHelper.AsistenciasBoletin getAsistenciasBoletin( Id boletinId){
+        return  new AsistenciasHelper.AsistenciasBoletin(boletinId);
+    }
+
+    @AuraEnabled(cacheable=false)
+    public static void saveAsistencias( Id divisionId, Integer semana, List<Asistencia__c> asistencias){
+        AsistenciasHelper.AsistenciasDivision helper = new AsistenciasHelper.AsistenciasDivision(divisionId, semana);        
+        helper.save(asistencias);
+    }
+
 }

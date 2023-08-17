@@ -1,5 +1,5 @@
 import { LightningElement , api, wire, track } from 'lwc';
-import getAsistencias from '@salesforce/apex/AsistenciasController.getAsistencias';
+import getAsistencias from '@salesforce/apex/AsistenciasController.getAsistenciasDivision';
 
 const columns = [
     { label: 'Alumno', fieldName: 'nombreAlumno__c' },
@@ -10,7 +10,7 @@ const columns = [
     { label: 'Viernes', fieldName: 'Asistencias__r.Viernes__c' }
 ];
 
-export default class Asistencias extends LightningElement {
+export default class AsistenciasDivision extends LightningElement {
     @api recordId;
     @track semana = 0;
     data = [];
@@ -18,14 +18,14 @@ export default class Asistencias extends LightningElement {
 
     @wire(getAsistencias, { divisionId: '$recordId', semana: '$semana'} ) getData({data, error}) {
         try {
-            console.log(data);
-            if ( data ) {            
-                this.data = data.map(boletin => {
+            if ( data ) {     
+                console.log(data.asistencias, this.recordId);
+                this.data = data.asistencias.map(boletin => {
                     let asistencia = { ...boletin};
                     if ( boletin.Asistencias__r && boletin.Asistencias__r.length > 0 ) {
                         asistencia.Asistencias__r = boletin.Asistencias__r[0];
                     } else {
-                        asistencia.Asistencias__r = { Lunes__c: 'Falto', Martes__c: '', Miercoles__c: '', Jueves__c: '', Viernes__c: ''}
+                        asistencia.Asistencias__r = { Lunes__c: '', Martes__c: '', Miercoles__c: '', Jueves__c: '', Viernes__c: ''}
                     }
                     console.log(asistencia.Asistencias__r);
                     return asistencia;

@@ -7,9 +7,11 @@ public class TestAsistenciasController {
         Test.startTest();
         Division__c division = TestDivisionTrigger.getDivisiones().get('1A');
         TestAsistenciasTrigger.getAsistencias();
+
+        Integer semanaActual = WeekHelper.getWeekOfDate();
         
-        List<Boletin__c> asistencias =  AsistenciasController.getAsistencias(division.Id, 1);
-        System.assertEquals(asistencias.size(),1);
+        AsistenciasHelper.AsistenciasDivision result =  AsistenciasController.getAsistenciasDivision(division.Id, semanaActual);
+        System.assertEquals(2, result.asistencias.size());
         Test.stopTest();
         
     }
