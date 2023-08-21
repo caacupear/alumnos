@@ -1,4 +1,17 @@
 <template>
-    <lightning-datatable key-field="id" data={data} columns={columns}>
+    <lightning-combobox 
+        name="semana" 
+        label="Semanas" 
+        value={semana} 
+        options={semanas} 
+        onchange={handleSemanasChange} >
+    </lightning-combobox>
+    <lightning-datatable 
+        onsave={handleSave} 
+        show-row-number-column 
+        hide-checkbox-column="true" 
+        key-field="id" 
+        data={data} 
+        columns={columns}>
     </lightning-datatable>
 </template>

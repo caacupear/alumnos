@@ -11,7 +11,7 @@ public with sharing class CicloLectivoTriggerHandler implements TriggerHandler{
         CicloLectivoTriggerHelper.verificarCicloAnterior(newCicloLectivos);
     }
     
-    public void beforeUpdate(List<sObject> newCicloLectivos, List<sObject> oldAccopunts, Map<Id,sObject> newCicloLectivoMap, Map<Id,sObject> oldCicloLectivoMap){
+    public void beforeUpdate(List<sObject> newCicloLectivos, List<sObject> oldCicloLectivos, Map<Id,sObject> newCicloLectivoMap, Map<Id,sObject> oldCicloLectivoMap){
     }
     
     public void beforeDelete(List<sObject> oldCicloLectivos, Map<Id,SObject> oldCicloLectivoMap){

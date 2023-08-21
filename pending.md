@@ -17,3 +17,30 @@
 [ ] asistencias: link al alumno o al boletin, colores por estado, sumas, mover semanas, editar
 [ ] validacion de duplicado de alumnos en una misma division
 [ ] validacion de duplicado de materias en una misma grilla
+
+
+[ ] Evaluaciones en Boletin que aparezcan todas las materias
+[ ] Asistencias en Boletin que aparezcan todas las semanas
+[ ] Iconos en alumnos por tipo
+[ ] Iconos en materias por tipo
+[ ] Kpi en alumnos
+	promedio de notas, suma de asistencias, x faltas en umos 30 dias
+	mejor y peor materia
+[ ] Kpi en boletines
+	mejores promedios
+[ ] trigger en MateriaHorario
+[ ] trigger en ProgramaEvaluacion
+[ ] Alumnos, reconocimientos y sanciones
+[ ] Importar en Division Boletin
+[ ] Importar en Division Grilla
+
+Componentes de filtro en tablas
+	- semanas (de un ciclo)
+	- alumnos (de una division)
+	- materias (de una division)
+
+
+Test de
+	Asistencias Controller
+	Grilla Controller
+	Division Controller

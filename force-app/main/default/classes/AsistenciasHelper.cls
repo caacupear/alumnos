@@ -37,6 +37,9 @@ public with sharing class AsistenciasHelper {
         public Integer semana;
         public Integer ano;
         public String semanaLabel;
+
+        @AuraEnabled public List<WeekHelper.Semana> semanas;
+        @AuraEnabled public Division__c division;
         @AuraEnabled public List<Boletin__c> asistencias;
 
         public AsistenciasDivision( Id divisionId, Integer semana ){
@@ -46,6 +49,7 @@ public with sharing class AsistenciasHelper {
                 ano = Date.today().year();
             }
             this.semana = semana;
+
             retrieve();            
         }
 
@@ -54,12 +58,15 @@ public with sharing class AsistenciasHelper {
         }
 
         void retrieve() {
+            division = [SELECT CicloLectivo__r.inicio__c, CicloLectivo__r.fin__c FROM Division__c WHERE ID = :this.divisionId];
             asistencias = [SELECT nombreAlumno__c, 
                     (SELECT Id, Lunes__c, Martes__c, Miercoles__c, Jueves__c, Viernes__c 
                     FROM Asistencias__r 
                     WHERE Semana__c = :this.semana )  
                 FROM Boletin__c 
                 WHERE Division__c = :this.divisionId];
+
+            this.semanas = WeekHelper.getWeeksRange(division.CicloLectivo__r.inicio__c, division.CicloLectivo__r.fin__c);
         }
     }
 

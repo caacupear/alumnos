@@ -8,15 +8,17 @@ const FIELDS = [NAME_FIELD, TIPODOCUMENTO_FIELD, DOCUMENTO_FIELD];
 
 export default class CertificadoAlumnoRegular extends LightningElement {
     @api recordId;
+    
+    get titulo() { return 'CONSTANCIA DE ALUMNO REGULAR' }
+    get nombre() { 
+        return this.alumno[NAME_FIELD];
+    }
     get fecha() { 
         const hoy = new Date();
 
         return hoy.getFullYear(); 
     }
-    
-    get nombre() { 
-        return this.alumno[NAME_FIELD];
-    }
+
     get documento() { return this.alumno[DOCUMENTO_FIELD]}
     get tipoDocumento() { return this.alumno[TIPODOCUMENTO_FIELD]}
 

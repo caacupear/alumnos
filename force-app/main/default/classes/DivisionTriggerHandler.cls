@@ -11,7 +11,7 @@ public without sharing class DivisionTriggerHandler implements TriggerHandler{
         DivisionTriggerHelper.setRecordNames(newDivisions);
     }
     
-    public void beforeUpdate(List<sObject> newDivisions, List<sObject> oldAccopunts, Map<Id,sObject> newDivisionMap, Map<Id,sObject> oldDivisionMap){
+    public void beforeUpdate(List<sObject> newDivisions, List<sObject> oldDivisions, Map<Id,sObject> newDivisionMap, Map<Id,sObject> oldDivisionMap){
         DivisionTriggerHelper.setRecordNames(newDivisions);
     }
 	

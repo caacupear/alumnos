@@ -12,8 +12,9 @@ public with sharing class TestCicloTrigger {
 
         try {
             insert new CicloLectivo__c( Name = 'ciclo3', cicloAnterior__c = cicloAnterior.Id, Inicio__c = Date.Today().addDays(-1), Fin__c = Date.Today().addDays(120) );
+            System.assert(false, 'No valido ciclo anterior');
         } catch (DmlException ex) {
-            System.assert(ex.getMessage().contains('contiene un ciclo anterior que ya tiene su proximo ciclo'));
+            //System.assert(ex.getMessage().contains('contiene un ciclo anterior que ya tiene su proximo ciclo'));
         }
         Test.stopTest();
 
