@@ -1,53 +1,52 @@
 import { LightningElement , api, wire, track } from 'lwc';
-import getAsistencias from '@salesforce/apex/AsistenciasController.getAsistenciasDivision';
-
-const columns = [
-    { label: 'Alumno', fieldName: 'linkToAlumno', type: 'url', typeAttributes: {label: { fieldName: 'nombreAlumno__c' } }},
-    { label: 'Lunes', fieldName: 'Asistencias__r.Lunes__c', editable: true },
-    { label: 'Martes', fieldName: 'Asistencias__r.Martes__c' , editable: true},
-    { label: 'Miercoles', fieldName: 'Asistencias__r.Miercoles__c' , editable: true},
-    { label: 'Jueves', fieldName: 'Asistencias__r.Jueves__c' , editable: true},
-    { label: 'Viernes', fieldName: 'Asistencias__r.Viernes__c', editable: true }
-];
+import getSemanas from '@salesforce/apex/AsistenciasController.getSemanas';
 
 export default class AsistenciasDivision extends LightningElement {
     @api recordId;
-    @track semana = 0;
-    data = [];
-    columns = columns;
-    isEdit = false;
+    _semana = 0;
     @track semanas = [];
+    isEditing = false;
+
+    @api 
+    get semana() {
+        return this._semana;
+    }
+    set semana( value ){
+        if ( Number.isNaN(value) ){
+            return;
+        }
+        this._semana = Number.parseInt(value);
+    }
 
     handleSemanasChange (event) {
-        this.semana = Number.parseInt(event.detail.value);
+        this.semana = event.detail.value;
     }
 
-    handleSave(event) {
-        console.log(event.detail.value);
+    get hasSemana() {
+        return this.semana !== 0;
     }
 
-    @wire(getAsistencias, { divisionId: '$recordId', semana: '$semana'} ) getData({data, error}) {
+    editingStarted() {
+        this.isEditing = true;
+    }
+
+    editingFinished() {
+        this.isEditing = false;
+    }
+
+    @wire(getSemanas, { divisionId: '$recordId'} ) getSemanas({data, error}) {
         try {
-            if ( data ) {     
-                this.semanas = data.semanas.map( semana => {
+            if ( data ) {
+                this.semanas = data.map( semana => {
                     return {label: semana.label, value: semana.numero }
                 });
-
-                this.data = data.asistencias.map(boletin => {
-                    let asistencia = { ...boletin};
-                    asistencia.linkToAlumno =  '/' + boletin.Id; 
-                    if ( boletin.Asistencias__r && boletin.Asistencias__r.length > 0 ) {
-                        asistencia.Asistencias__r = boletin.Asistencias__r[0];
-                    } else {
-                        asistencia.Asistencias__r = { Lunes__c: '', Martes__c: '', Miercoles__c: '', Jueves__c: '', Viernes__c: ''}
-                    }
-                    console.log(asistencia.Asistencias__r);
-                    return asistencia;
-                })
+                // Si no tiene una semana, selecciona la primera
+                if ( this.semana == 0 && data.length > 0 ) {
+                    this.semana = data[0].numero;
+                }
             }
         } catch( e) {
             console.log(e.message);
         }
-    }
-
+    }        
 }

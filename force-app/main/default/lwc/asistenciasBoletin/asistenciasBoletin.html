@@ -1,4 +1,11 @@
 <template>
-    <lightning-datatable hide-checkbox-column="true" key-field="id" data={data} columns={columns}>
-    </lightning-datatable>
+    <c-picklist-datatable 
+        hide-checkbox-column="true" 
+        key-field="Semana__c" 
+        data={data} 
+        onsave={handleSave} 
+        show-row-number-column 
+        draft-values={draftValues}
+        columns={columns}>
+    </c-picklist-datatable>
 </template>

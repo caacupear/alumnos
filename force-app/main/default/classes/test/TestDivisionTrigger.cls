@@ -24,7 +24,7 @@ public class TestDivisionTrigger {
 
     static public Map<String, Division__c> getDivisiones(){
         if ( divisiones == null ) {
-            CicloLectivo__c ciclo = TestCicloTrigger.getCiclos().get('ciclo1');    
+            CicloLectivo__c ciclo = TestCicloTrigger.getCiclos().get('cicloActual');    
             divisiones = new Map<String, Division__c>();
             divisiones.put( '1A', new Division__c( CicloLectivo__c = ciclo.Id, anoEscolar__c = 1, subdivision__c = 'A' ) );
             divisiones.put( '1B', new Division__c( CicloLectivo__c = ciclo.Id, anoEscolar__c = 1, subdivision__c = 'B' ) );

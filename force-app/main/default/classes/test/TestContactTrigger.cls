@@ -6,6 +6,7 @@ public with sharing class TestContactTrigger {
         if  (alumnos == null ) {
             alumnos = new Map<String,Contact>();
             alumnos.put( 'Juan', new Contact( FirstName = 'Juan',LastName= 'Pedro', recordTypeId = ContactHelper.getRecordTypeIdForAlumno(), Documento__c = '123', TipoDeDocumento__c = 'DNI' ) );
+            alumnos.put( 'Alberto', new Contact( FirstName = 'Alberto',LastName= 'Tito', recordTypeId = ContactHelper.getRecordTypeIdForAlumno(), Documento__c = '124', TipoDeDocumento__c = 'DNI' ) );
             alumnos.put( 'Ana', new Contact( FirstName = 'Ana',LastName= 'Laura', recordTypeId = ContactHelper.getRecordTypeIdForAlumno(), Documento__c = '125', TipoDeDocumento__c = 'DNI' ) );
             insert alumnos.values();
         }

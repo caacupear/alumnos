@@ -1,18 +1,19 @@
 public with sharing class AsistenciasHelper {
+    static List<String> camposDias = new List<String>{ 'Lunes__c', 'Martes__c', 'Miercoles__c', 'Jueves__c', 'Viernes__c'};
 
     public class AsistenciasCiclo {
         Id cicloId;
-        @AuraEnabled public List<Asistencia__c> asistencias;
+        @AuraEnabled public List<AggregateResult> asistencias;
 
         public AsistenciasCiclo( Id cicloId){
             this.cicloId = cicloId;
             retrieve();
         }
         void retrieve() {
-            asistencias = [SELECT Id, Lunes__c, Martes__c, Miercoles__c, Jueves__c, Viernes__c 
-                    FROM Asistencia__c 
-                    WHERE Boletin__r.Division__r.CicloLectivo__c = :this.cicloId];
-
+            asistencias = [SELECT  Boletin__r.Division__c, Boletin__r.Division__r.Name,  NombreSemana__c, Sum(Asistencia__c) Faltas
+                FROM Asistencia__c 
+                WHERE Boletin__r.Division__r.CicloLectivo__c = :this.cicloId
+                GROUP BY Boletin__r.Division__c, Boletin__r.Division__r.Name, NombreSemana__c];
         }
     }
 
@@ -25,23 +26,42 @@ public with sharing class AsistenciasHelper {
             retrieve();
         }
 
+        public void save(List<Map<String, Object>> draftValues) {
+            try {
+                List<Asistencia__c> asistencias = new List<Asistencia__c>();
+
+                for ( Map<String, Object> draft :draftValues ){
+                    Asistencia__c asistencia = new Asistencia__c( Boletin__c = this.boletinId, Semana__c =  Decimal.valueOf((String)draft.get('Semana__c')) );
+                    asistencia.UniqueKey__c = asistencia.Boletin__c + '-' + String.valueOf(asistencia.Semana__c);
+                    for ( String campoDia : AsistenciasHelper.camposDias ){
+                        if ( draft.containsKey(campoDia) ) {
+                            asistencia.put( campoDia, draft.get(campoDia));
+                        }
+                    }
+                    asistencias.add(asistencia);
+                }    
+                System.debug(asistencias);
+                upsert asistencias UniqueKey__c;
+            } catch ( Exception e ){
+                System.debug(e.getMessage());
+            }
+        }
+
+
         void retrieve() {
-            asistencias = [SELECT Id, semana__c, Lunes__c, Martes__c, Miercoles__c, Jueves__c, Viernes__c 
+            asistencias = [SELECT Id, Semana__c, Lunes__c, Martes__c, Miercoles__c, Jueves__c, Viernes__c, Asistencia__c 
                     FROM Asistencia__c 
-                    WHERE Boletin__c = :this.boletinId];
+                    WHERE Boletin__c = :this.boletinId ORDER BY Ano__c DESC, Semana__c DESC];
         }
     }
 
     public class AsistenciasDivision {
         public Id divisionId;
-        public Integer semana;
+        @AuraEnabled public Integer semana;
         public Integer ano;
-        public String semanaLabel;
-
-        @AuraEnabled public List<WeekHelper.Semana> semanas;
-        @AuraEnabled public Division__c division;
-        @AuraEnabled public List<Boletin__c> asistencias;
-
+        @AuraEnabled public List<Boletin__c> boletines;
+        @AuraEnabled public Map<Id, Asistencia__c> asistencias;
+        
         public AsistenciasDivision( Id divisionId, Integer semana ){
             this.divisionId = divisionId;
             if ( semana == 0) {
@@ -52,21 +72,45 @@ public with sharing class AsistenciasHelper {
 
             retrieve();            
         }
+        
+        public void save(List<Map<String, Object>> draftValues) {
+            try {
+                List<Asistencia__c> asistencias = new List<Asistencia__c>();
 
-        public void save(List<Asistencia__c> asistencias) {
-            upsert asistencias;
+                for ( Map<String, Object> draft :draftValues ){
+                    Asistencia__c asistencia = new Asistencia__c( Boletin__c = (String)draft.get('id'), Semana__c = this.semana);
+                    asistencia.UniqueKey__c = asistencia.Boletin__c + '-' + String.valueOf(asistencia.Semana__c);
+                    for ( String campoDia : AsistenciasHelper.camposDias ){
+                        if ( draft.containsKey(campoDia) ) {
+                            asistencia.put( campoDia, draft.get(campoDia));
+                        }
+                    }
+                    asistencias.add(asistencia);
+                }    
+                System.debug(asistencias);
+                upsert asistencias UniqueKey__c;
+            } catch ( Exception e ){
+                System.debug(e.getMessage());
+            }
         }
 
         void retrieve() {
-            division = [SELECT CicloLectivo__r.inicio__c, CicloLectivo__r.fin__c FROM Division__c WHERE ID = :this.divisionId];
-            asistencias = [SELECT nombreAlumno__c, 
-                    (SELECT Id, Lunes__c, Martes__c, Miercoles__c, Jueves__c, Viernes__c 
-                    FROM Asistencias__r 
-                    WHERE Semana__c = :this.semana )  
+            List<Boletin__c> boletines = [SELECT nombreAlumno__c, 
+                (SELECT Id, Lunes__c, Martes__c, Miercoles__c, Jueves__c, Viernes__c , Asistencia__c
+                FROM Asistencias__r 
+                WHERE Semana__c = :this.semana )  
                 FROM Boletin__c 
-                WHERE Division__c = :this.divisionId];
+                WHERE Division__c = :this.divisionId];            
+            
+            this.boletines = new List<Boletin__c>();
+            this.asistencias = new Map<Id, Asistencia__c>();
 
-            this.semanas = WeekHelper.getWeeksRange(division.CicloLectivo__r.inicio__c, division.CicloLectivo__r.fin__c);
+            for( Boletin__c boletin: boletines){
+                this.boletines.add(boletin);
+                if ( boletin.Asistencias__r.size() > 0 ) {
+                    this.asistencias.put(boletin.Id, boletin.Asistencias__r.get(0));
+                }
+            }
         }
     }
 

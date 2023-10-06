@@ -20,7 +20,7 @@ public class WeekHelper {
     }
 
     public static String getWeekRangeLabel(Date desde, Date hasta) {
-        String label =  String.valueOf(desde.day());
+        String label =  '#' + String.valueOf(getWeekOfDate(desde)) + ': ' + String.valueOf(desde.day());
         if ( desde.month() <> hasta.month()) {
             label += ' de ' + labelMeses.get(desde.month());
         }

@@ -37,22 +37,21 @@ public class TestBoletinTrigger {
             //System.assert(ex.getMessage().contains('duplicado'));
         }
 
-        // CUANDO se quiere cambiar la division o el alumno de un boletin que ya existe ENTONCES debe dar un error por Duplicado
+        // DADO un alumno que ya este en el ciclo CUANDO se quiere crear otro boletin en cualquier division ENTONCES no es valido
         Boletin__c boletinJuan1B =  new Boletin__c( Division__c = division1B.Id, Alumno__c = alumnoJuan.Id);
-        Boletin__c boletinAna1A =  new Boletin__c( Division__c = division1A.Id, Alumno__c = alumnoAna.Id);
         
-        System.debug([SELECT Alumno__c, Division__c, Alumno__r.Name, Division__r.Name FRom Boletin__c]);
-        insert new List<Boletin__c>{boletinJuan1B, boletinAna1A};
-    
         try {
-            boletinJuan1B.Division__c = division1A.Id;
-            update boletinJuan1B;
-            System.assert(false, 'No valido duplicado de Juan en 1A');
+            insert boletinJuan1B;
+            System.assert(false, 'No valido duplicados');
         } catch (DmlException ex) {
             System.debug(ex.getMessage());
             //System.assert(ex.getMessage().contains('duplicado'));
         }
 
+        // CUANDO se quiere cambiar la division o el alumno de un boletin que ya existe ENTONCES debe dar un error por Duplicado
+        Boletin__c boletinAna1A =  new Boletin__c( Division__c = division1A.Id, Alumno__c = alumnoAna.Id);
+        insert boletinAna1A;
+    
         try {
             boletinAna1A.Alumno__c = alumnoJuan.Id;
             update boletinAna1A;
@@ -65,6 +64,8 @@ public class TestBoletinTrigger {
         // DADO dos boletines CUANDO se intercambian Divisiones ENTONCES es valido
 
         // DADO dos boletines CUANDO se intercambian Alumnos ENTONCES es valido
+
+        
 
         Test.stopTest();
     }

@@ -10,10 +10,9 @@ public class TestAsistenciasController {
 
         Integer semanaActual = WeekHelper.getWeekOfDate();
         
-        AsistenciasHelper.AsistenciasDivision result =  AsistenciasController.getAsistenciasDivision(division.Id, semanaActual);
+        AsistenciasHelper.AsistenciasDivision result =  AsistenciasController.getByDivision(division.Id, semanaActual);
         System.assertEquals(2, result.asistencias.size());
-        Test.stopTest();
-        
+        Test.stopTest();   
     }
 
 }

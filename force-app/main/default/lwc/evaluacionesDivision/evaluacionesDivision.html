@@ -1,4 +1,13 @@
 <template>
-    <lightning-datatable hide-checkbox-column="true" key-field="id" data={data} columns={columns}>
-    </lightning-datatable>
+    <lightning-combobox 
+        name="materia" 
+        label="Materias" 
+        value={materia} 
+        options={materias} 
+        disabled={isEditing}
+        onchange={handleMateriasChange} >
+    </lightning-combobox>
+    <template if:true={hasMateria}>
+        <c-evaluaciones-tabla oneditstarted={editingStarted} oneditfinished={editingFinished} division-id={recordId} grilla-id={materia}></c-evaluaciones-tabla>
+    </template>
 </template>

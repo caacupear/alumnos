@@ -1,23 +1,28 @@
 import { LightningElement , api, wire, track } from 'lwc';
-import getEvaluaciones from '@salesforce/apex/EvaluacionesController.getEvaluacionesBoletin';
+import getEvaluaciones from '@salesforce/apex/EvaluacionesController.getByBoletin';
+import {showError} from 'c/utils';
 
 export default class EvaluacionesBoletin extends LightningElement {
     @api recordId;
     data = [];
     columns = [{ label: 'Materia', fieldName: 'Materia__c' }];
+    hasErrors = false;
 
-    @wire(getEvaluaciones, { boletinId: '$recordId'} ) getData({data, error}) {
-        try {
-            console.log(data);
-            
-            if ( data ) {            
-                this.columns = this.columns.concat( data.programa.evaluaciones.map( item => {
+    @wire(getEvaluaciones, { boletinId: '$recordId'} ) getData(result) {
+        if ( result.data ) {            
+            try {        
+                this.columns = this.columns.concat( result.data.programa.evaluaciones.map( item => {
                     return { label: item.nombre, fieldName: item.campo }
                 } ) );
-                this.data = data.evaluaciones;
+                this.data = result.data.evaluaciones;
+            } catch(error) {
+                this.hasErrors = true;
+                this.dispatchEvent( showError('Error', error ) );
             }
-        } catch( e) {
-            console.log(e.message);
+        }
+        if ( result.error ) {
+            this.hasErrors = true;
+            this.dispatchEvent( showError('Error', result.error ) );
         }
     }
 }

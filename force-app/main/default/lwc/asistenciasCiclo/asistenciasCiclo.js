@@ -1,21 +1,51 @@
 import { LightningElement , api, wire, track } from 'lwc';
-import getAsistencias from '@salesforce/apex/AsistenciasController.getAsistenciasCiclo';
+import getAsistencias from '@salesforce/apex/AsistenciasController.getByCiclo';
+ 
 
 export default class AsistenciasCiclo extends LightningElement {
     @api recordId;
-    data = [];
-    columns = [
-        { label: 'Division', fieldName: 'Division__r.Name' },
-    ];
+    @track data = [];
+    _columns = [];
 
-    @wire(getAsistencias, { cicloId: '$recordId'} ) getData({data, error}) {
-        try {
-            columns
-            if ( data ) { 
-                console.log(data);
+    get columns() {
+        return this._columns;
+    }
+
+    @wire(getAsistencias, { cicloId: '$recordId'} ) getData(result) {
+        if ( result.data ) { 
+            const weekMap = {};      
+            const divisiones = {};      
+            for( const item of result.data.asistencias ) {
+                if ( item.Division__c && item.Name) {
+                    divisiones[item.Division__c] = item.Name;
+                } 
+                if ( weekMap[item.NombreSemana__c] ) {
+                    weekMap[item.NombreSemana__c].push(item);
+                } else {
+                    weekMap[item.NombreSemana__c] = [item];
+                }
             }
-        } catch( e) {
-            console.log(e.message);
+            
+            this.data = [];
+            for( const nombreSemana in weekMap ) {
+                const items = weekMap[nombreSemana]
+                const row = { NombreSemana__c: nombreSemana }
+                for( const item of items ) {
+                    row[item.Division__c] = item.Faltas;
+                    row['linkTo' + item.Division__c] = '/' + item.Division__c + '?'; // deberia ir la semana                    
+                }
+                this.data.push(row);
+            }
+
+            this._columns = [{ label: 'Semana', fieldName: 'NombreSemana__c'}];            
+            for( const divisionId in divisiones ) {
+                this._columns.push ( { 
+                    label: divisiones[divisionId], 
+                    fieldName: `linkTo${divisionId}`, 
+                    type: 'url', 
+                    typeAttributes: {label: { fieldName: divisionId }}                                 
+                });
+            }                
         }
     }
 

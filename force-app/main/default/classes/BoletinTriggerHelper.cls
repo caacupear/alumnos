@@ -1,5 +1,5 @@
 public with sharing class BoletinTriggerHelper {
-    
+            
     static public void validateDuplicates( Map<Id,sObject> newBoletinMap, Map<Id,sObject> oldBoletinMap) {
         Set<Id> divisiones = new Set<Id> ();
         Set<Id> alumnos = new Set<Id> ();
@@ -16,35 +16,30 @@ public with sharing class BoletinTriggerHelper {
                 boletinesConCambio.add(boletinId);
             }
         }
-        System.debug(divisiones);
-        System.debug(alumnos);
-        System.debug(boletinesConCambio);
-
         if ( boletinesConCambio.size() > 0 ) {
-            List<Boletin__c> boletinesExistentes = [SELECT Division__c, Alumno__c FROM Boletin__c WHERE Division__c in: divisiones AND Alumno__c IN :alumnos];
-            System.debug(boletinesExistentes);
-            Map<Id, Set<Id>> existentesMap = getDivisionesAlumnos(boletinesExistentes);
+            Map<Id,Division__c> divisionesExistentes = new Map<Id,Division__c> ([SELECT CicloLectivo__c, Name FROM Division__c WHERE Id in: divisiones]);            
+            List<Boletin__c> boletinesExistentes = [SELECT Division__r.CicloLectivo__c, Alumno__c FROM Boletin__c WHERE Division__c in: divisiones AND Alumno__c IN :alumnos];
+            Map<Id, Set<Id>> existentesMap = getCiclosAlumnos(boletinesExistentes);
+
             // Verifca si el alumno y division ya existen (y los agrega por si se repiten dentro de boletines tambien)
             for ( Id boletinId :boletinesConCambio) {
                 Boletin__c nuevo = (Boletin__c)newBoletinMap.get(boletinId);
                 Boletin__c viejo = (Boletin__c)oldBoletinMap.get(boletinId);
-                System.debug(existentesMap);
-                System.debug(nuevo);
-                System.debug(viejo);
-    
-                if ( existentesMap.containsKey(nuevo.Division__c) ) {
-                    if ( existentesMap.get(nuevo.Division__c).contains(nuevo.Alumno__c) ) {
+                Id key = divisionesExistentes.get(nuevo.Division__c).CicloLectivo__c;
+                Id value = nuevo.Alumno__c;
+                Id oldKey = divisionesExistentes.get(viejo.Division__c).CicloLectivo__c;
+
+                if ( existentesMap.containsKey(key) ) {
+                    if ( existentesMap.get(key).contains(value) ) {
                         nuevo.addError('Ya existe un boletin para la division ' + nuevo.Division__c + ' y alumno ' + nuevo.Alumno__c );
                     }
-                    existentesMap.get(nuevo.Division__c).add(nuevo.Alumno__c);
+                    existentesMap.get(key).add(value);
                 } else {
-                    existentesMap.put(nuevo.Division__c, new Set<Id>{ nuevo.Alumno__c });            
+                    existentesMap.put(key, new Set<Id>{ value });            
                 }
                 // Quita el viejo
-                if ( existentesMap.containsKey(viejo.Division__c) ) {
-                    existentesMap.get(viejo.Division__c).remove(viejo.Alumno__c);
-                } else {
-                    System.debug('Por que no esta ' + viejo.Division__c);
+                if ( existentesMap.containsKey(oldKey) ) {
+                    existentesMap.get(oldKey).remove(viejo.Alumno__c);
                 }
             }
         }
@@ -54,18 +49,23 @@ public with sharing class BoletinTriggerHelper {
         Set<Id> divisiones = getDivisiones(boletines);        
         Set<Id> alumnos = getAlumnos(boletines);
 
-        List<Boletin__c> boletinesExistentes = [SELECT Division__c, Alumno__c FROM Boletin__c WHERE Division__c in: divisiones AND Alumno__c IN :alumnos];
-        Map<Id, Set<Id>> existentesMap = getDivisionesAlumnos(boletinesExistentes);
+        Map<Id,Division__c> divisionesExistentes = new Map<Id,Division__c> ([SELECT CicloLectivo__c, Name FROM Division__c WHERE Id in: divisiones]);
+        Set<Id> ciclos = getCiclos(divisionesExistentes.values());
+
+        List<Boletin__c> boletinesExistentes = [SELECT Division__r.CicloLectivo__c, Alumno__c FROM Boletin__c WHERE Division__r.CicloLectivo__c in: ciclos AND Alumno__c IN :alumnos];
+        Map<Id, Set<Id>> existentesMap = getCiclosAlumnos(boletinesExistentes);
         
         // Verifca si el alumno y division ya existen (y los agrega por si se repiten dentro de boletines tambien)
         for( Boletin__c boletin :boletines) {
-            if ( existentesMap.containsKey(boletin.Division__c) ) {
-                if ( existentesMap.get(boletin.Division__c).contains(boletin.Alumno__c) ) {
-                    boletin.addError('Ya existe un boletin para la division ' + boletin.Division__c + ' y alumno ' + boletin.Alumno__c );
+            Id key = divisionesExistentes.get(boletin.Division__c).CicloLectivo__c;
+            Id value = boletin.Alumno__c;
+            if ( existentesMap.containsKey(key) ) {
+                if ( existentesMap.get(key).contains(value) ) {
+                    boletin.addError('Ya existe un boletin para el alumno ' + boletin.Name + ' dentro del mismo ciclo en la siguiente division' + divisionesExistentes.get(boletin.Division__c).Name );
                 }
-                existentesMap.get(boletin.Division__c).add(boletin.Alumno__c);
+                existentesMap.get(key).add(value);
             } else {
-                existentesMap.put(boletin.Division__c, new Set<Id>{ boletin.Alumno__c });            
+                existentesMap.put(key, new Set<Id>{ value });            
             }
         }
     }
@@ -132,17 +132,37 @@ public with sharing class BoletinTriggerHelper {
         return TriggerHelper.getIdsFromSObjects(boletines, 'Division__c');
     }
 
-    static public Map<Id, Set<Id>> getDivisionesAlumnos(List<Boletin__c> boletines) {
-        Map<Id, Set<Id>>  divisionesMap = new Map<Id, Set<Id>>();
+    static public Set<Id> getCiclos(List<Division__c> divisiones) {
+        return TriggerHelper.getIdsFromSObjects(divisiones, 'CicloLectivo__c');
+    }
+
+    // static public Map<Id, Set<Id>> getDivisionesAlumnos(List<Boletin__c> boletines) {
+    //     Map<Id, Set<Id>>  divisionesMap = new Map<Id, Set<Id>>();
+    //     for ( Boletin__c boletin: boletines) {
+    //         if ( !String.isBlank(boletin.Division__c) && !String.isBlank(boletin.Alumno__c) )  {
+    //             if ( divisionesMap.containsKey(boletin.Division__c) ) {
+    //                 divisionesMap.get(boletin.Division__c).add(boletin.Alumno__c);
+    //             } else {
+    //                 divisionesMap.put(boletin.Division__c, new Set<Id>{ boletin.Alumno__c });
+    //             }
+    //         }
+    //     }
+    //     return divisionesMap;
+    // }    
+
+    static public Map<Id, Set<Id>> getCiclosAlumnos(List<Boletin__c> boletines) {
+        Map<Id, Set<Id>>  ciclosMap = new Map<Id, Set<Id>>();
         for ( Boletin__c boletin: boletines) {
-            if ( !String.isBlank(boletin.Division__c) && !String.isBlank(boletin.Alumno__c) )  {
-                if ( divisionesMap.containsKey(boletin.Division__c) ) {
-                    divisionesMap.get(boletin.Division__c).add(boletin.Alumno__c);
+            Id key = boletin.Division__r.CicloLectivo__c;
+            Id value = boletin.Alumno__c;
+            if ( !String.isBlank(key) && !String.isBlank(value) )  {
+                if ( ciclosMap.containsKey(key) ) {
+                    ciclosMap.get(key).add(value);
                 } else {
-                    divisionesMap.put(boletin.Division__c, new Set<Id>{ boletin.Alumno__c });
+                    ciclosMap.put(key, new Set<Id>{ value });
                 }
             }
         }
-        return divisionesMap;
+        return ciclosMap;
     }    
 }

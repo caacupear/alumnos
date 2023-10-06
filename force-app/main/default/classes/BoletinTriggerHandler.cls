@@ -8,8 +8,8 @@ public without sharing class BoletinTriggerHandler implements TriggerHandler{
     }
 
     public void beforeInsert(List<Boletin__c> newBoletines){
-        BoletinTriggerHelper.validateDuplicates(newBoletines);
         BoletinTriggerHelper.setRecordNames(newBoletines);
+        BoletinTriggerHelper.validateDuplicates(newBoletines);
     }
     
     public void beforeUpdate(List<sObject> newBoletines, List<sObject> oldBoletines, Map<Id,sObject> newBoletinMap, Map<Id,sObject> oldBoletinMap){

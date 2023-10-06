@@ -1,0 +1,15 @@
+<template>
+    <template if:false={isLoading}>
+        <c-picklist-datatable
+            onsave={handleSave} 
+            oncancel={handleCancel} 
+            oncellchange={handleCellChange}
+            show-row-number-column 
+            draft-values={draftValues}
+            hide-checkbox-column="true" 
+            key-field="id" 
+            data={data} 
+            columns={columns}>            
+        </c-picklist-datatable>
+    </template>
+</template>

@@ -3,15 +3,11 @@
         name="semana" 
         label="Semanas" 
         value={semana} 
-        options={semanas} 
+        options={semanas}
+        disabled={isEditing}
         onchange={handleSemanasChange} >
     </lightning-combobox>
-    <lightning-datatable 
-        onsave={handleSave} 
-        show-row-number-column 
-        hide-checkbox-column="true" 
-        key-field="id" 
-        data={data} 
-        columns={columns}>
-    </lightning-datatable>
+    <template if:true={hasSemana}>
+        <c-asistencias-tabla oneditstarted={editingStarted} oneditfinished={editingFinished} division-id={recordId} semana={semana}></c-asistencias-tabla>
+    </template>
 </template>
