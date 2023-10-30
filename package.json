@@ -14,7 +14,7 @@
     "prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
     "postinstall": "husky install",
     "precommit": "lint-staged",
-    "doc": "node scripts/doc/doc.js",
+    "doc": "node docs/scripts/doc/doc.js",
     "config": "node scripts/doc/config.js"
   },
   "devDependencies": {
