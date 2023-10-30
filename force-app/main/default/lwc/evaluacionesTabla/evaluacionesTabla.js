@@ -68,6 +68,7 @@ export default class EvaluacionesTabla extends LightningElement {
     @wire(getPrograma, { divisionId: '$divisionId' } ) getPrograma(result) {
         if ( result.data ) {
             try {
+                
                 this.columns = this.columns.concat( result.data.evaluaciones.map( item => {
                     if (item.tipo == 'Conceptual')  {
                         this.opciones['opciones_' + item.campo] = arrayToPicklist(item.opciones);                        
@@ -77,6 +78,16 @@ export default class EvaluacionesTabla extends LightningElement {
                                     context: { fieldName: 'Id' } 
                                 }
                             }
+                    } else if (item.tipo == 'Opcion')  {
+                        this.opciones['opciones_' + item.campo] = arrayToPicklist(item.opciones);                        
+                        return { label: item.nombre, fieldName: item.campo, type: 'colorPicklistColumn', editable: true, typeAttributes: {
+                                    placeholder: 'Seleccione', options: { fieldName: 'opciones_' + item.campo}, 
+                                    value: { fieldName: item.campo }, 
+                                    context: { fieldName: 'Id' } 
+                                }
+                            }
+                    } else if (item.tipo == 'Formula')  {
+                        return { label: item.nombre, fieldName: item.campo, editable: false}
                     } else {
                         return { label: item.nombre, fieldName: item.campo, type: 'number', editable: true}
                     }
