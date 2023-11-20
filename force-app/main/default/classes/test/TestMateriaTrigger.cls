@@ -1,5 +1,5 @@
 @IsTest
-public with sharing class TestMateriaTrigger {
+public class TestMateriaTrigger {
     static private Map<String, Materia__c> materias;
     public static Map<String, Materia__c> getMaterias(){
         if ( materias == null ) {            

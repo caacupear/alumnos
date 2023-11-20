@@ -1,6 +1,10 @@
 public with sharing class AsistenciasHelper {
     static List<String> camposDias = new List<String>{ 'Lunes__c', 'Martes__c', 'Miercoles__c', 'Jueves__c', 'Viernes__c'};
 
+    public static String getUniqueKey(Asistencia__c asistencia) {
+        return asistencia.Boletin__c + '-' + String.valueOf(asistencia.Semana__c);
+    }
+
     public class AsistenciasCiclo {
         Id cicloId;
         @AuraEnabled public List<AggregateResult> asistencias;
@@ -10,10 +14,10 @@ public with sharing class AsistenciasHelper {
             retrieve();
         }
         void retrieve() {
-            asistencias = [SELECT  Boletin__r.Division__c, Boletin__r.Division__r.Name,  NombreSemana__c, Sum(Asistencia__c) Faltas
+            asistencias = [SELECT  Boletin__r.Division__c, Boletin__r.Division__r.Name,  SemanaText__c, Sum(Asistencia__c) Faltas
                 FROM Asistencia__c 
                 WHERE Boletin__r.Division__r.CicloLectivo__c = :this.cicloId
-                GROUP BY Boletin__r.Division__c, Boletin__r.Division__r.Name, NombreSemana__c];
+                GROUP BY Boletin__r.Division__c, Boletin__r.Division__r.Name, SemanaText__c];
         }
     }
 
@@ -32,7 +36,7 @@ public with sharing class AsistenciasHelper {
 
                 for ( Map<String, Object> draft :draftValues ){
                     Asistencia__c asistencia = new Asistencia__c( Boletin__c = this.boletinId, Semana__c =  Decimal.valueOf((String)draft.get('Semana__c')) );
-                    asistencia.UniqueKey__c = asistencia.Boletin__c + '-' + String.valueOf(asistencia.Semana__c);
+                    asistencia.UniqueKey__c = getUniqueKey(asistencia);
                     for ( String campoDia : AsistenciasHelper.camposDias ){
                         if ( draft.containsKey(campoDia) ) {
                             asistencia.put( campoDia, draft.get(campoDia));
@@ -79,7 +83,7 @@ public with sharing class AsistenciasHelper {
 
                 for ( Map<String, Object> draft :draftValues ){
                     Asistencia__c asistencia = new Asistencia__c( Boletin__c = (String)draft.get('id'), Semana__c = this.semana);
-                    asistencia.UniqueKey__c = asistencia.Boletin__c + '-' + String.valueOf(asistencia.Semana__c);
+                    asistencia.UniqueKey__c = getUniqueKey(asistencia);
                     for ( String campoDia : AsistenciasHelper.camposDias ){
                         if ( draft.containsKey(campoDia) ) {
                             asistencia.put( campoDia, draft.get(campoDia));

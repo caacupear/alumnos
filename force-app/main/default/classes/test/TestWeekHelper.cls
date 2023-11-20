@@ -21,7 +21,7 @@ public class TestWeekHelper {
         for ( WeekHelper.Semana semana: semanas) {
             System.assertEquals(semana.numero, index);
             System.assertEquals(semana.desde, desde);
-            desde.addDays(7);
+            desde = desde.addDays(7);
             index++;
         }
     }

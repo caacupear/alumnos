@@ -1,4 +1,4 @@
-public with sharing class TestContactTrigger {
+public class TestContactTrigger {
     static private Map<String,Contact> alumnos;
     static private Map<String,Contact> docentes;
 

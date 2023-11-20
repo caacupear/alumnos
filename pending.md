@@ -1,18 +1,23 @@
+[x] Unique key por trigger
+
+
+
+Constancias
+[ ] Ver Download 
+[ ] Enviar por email o whastapp
+
 Asistencias
+[ ] Diaria (Fijo dia, elijo division y ahi tengo el masivo)
 [ ] Asistencias en Boletin que aparezcan todas las semanas
 [ ] Aparezca el total de faltas 
 [ ] Bloquear cambio de semanas cuando esta editando
 
 
-[x] trigger en ProgramaEvaluacion
 En creacion de Boletin
-	[X] El alumno no tenga un boletin ya creado para el mismo ciclo
 	[ ] Que el alumno cumpla los requisitos del curso que tenga el año previo aprobado ??
 	[ ] boletin regla de alumno Inscripto ?
 
-[X] Verificar que no tenga ya proximo ciclo
 [ ] Vacantes y reservas de inscripciones
-
 [ ] trigger en MateriaHorario
 
 
@@ -42,6 +47,7 @@ Procesos Batch
 	
 
 [ ] Asistencias futuras no se deberian de cargar (componente disabled)
+
 
 Componentes de filtro en tablas
 	- semanas (de un ciclo)

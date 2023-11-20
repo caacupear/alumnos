@@ -1,5 +1,5 @@
 @IsTest
-public with sharing class TestGrillaController {
+public class TestGrillaController {
     @IsTest
     static void testGetHorarioDivision(){
         

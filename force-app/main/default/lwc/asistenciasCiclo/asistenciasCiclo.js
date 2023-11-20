@@ -19,17 +19,17 @@ export default class AsistenciasCiclo extends LightningElement {
                 if ( item.Division__c && item.Name) {
                     divisiones[item.Division__c] = item.Name;
                 } 
-                if ( weekMap[item.NombreSemana__c] ) {
-                    weekMap[item.NombreSemana__c].push(item);
+                if ( weekMap[item.SemanaText__c] ) {
+                    weekMap[item.SemanaText__c].push(item);
                 } else {
-                    weekMap[item.NombreSemana__c] = [item];
+                    weekMap[item.SemanaText__c] = [item];
                 }
             }
             
             this.data = [];
-            for( const nombreSemana in weekMap ) {
-                const items = weekMap[nombreSemana]
-                const row = { NombreSemana__c: nombreSemana }
+            for( const SemanaText in weekMap ) {
+                const items = weekMap[SemanaText]
+                const row = { SemanaText__c: SemanaText }
                 for( const item of items ) {
                     row[item.Division__c] = item.Faltas;
                     row['linkTo' + item.Division__c] = '/' + item.Division__c + '?'; // deberia ir la semana                    
@@ -37,7 +37,7 @@ export default class AsistenciasCiclo extends LightningElement {
                 this.data.push(row);
             }
 
-            this._columns = [{ label: 'Semana', fieldName: 'NombreSemana__c'}];            
+            this._columns = [{ label: 'Semana', fieldName: 'SemanaText__c'}];            
             for( const divisionId in divisiones ) {
                 this._columns.push ( { 
                     label: divisiones[divisionId], 

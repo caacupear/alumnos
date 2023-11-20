@@ -19,6 +19,11 @@ public class WeekHelper {
         return Math.floor((fecha.toStartofWeek().dayOfYear() -1) / 7).intValue() +1;
     }
 
+    public static String getWeekRangeLabel(Integer semana, Integer ano) {
+        Date desde = getFirsDateOfWeek(semana, ano);
+        return getWeekRangeLabel(desde, desde.addDays(4));
+    }
+
     public static String getWeekRangeLabel(Date desde, Date hasta) {
         String label =  '#' + String.valueOf(getWeekOfDate(desde)) + ': ' + String.valueOf(desde.day());
         if ( desde.month() <> hasta.month()) {

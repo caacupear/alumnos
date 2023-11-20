@@ -10,6 +10,10 @@ public with sharing class EvaluacionesHelper {
         @AuraEnabled public List<ProgramaEvaluacion> evaluaciones;
     }
     
+    static public String getUniqueKey(Evaluacion__c evaluacion) {
+        return evaluacion.Boletin__c + '-' + evaluacion.Grilla__c;
+    }
+
     static private Set<String> getFieldsEvaluaciones() {
         Set<String> fields = new Set<String>();
 		Schema.DescribeFieldResult fieldResult = ProgramaEvaluacion__c.Campo__c.getDescribe();
@@ -93,7 +97,7 @@ public with sharing class EvaluacionesHelper {
                 List<Evaluacion__c> evaluaciones = new List<Evaluacion__c>();
                 for ( Map<String, Object> draft :draftValues ) {
                     Evaluacion__c evaluacion = new Evaluacion__c( Boletin__c = (String)draft.get('id'), Grilla__c = this.grillaId);
-                    evaluacion.UniqueKey__c = evaluacion.Boletin__c + '-' + evaluacion.Grilla__c;
+                    evaluacion.UniqueKey__c = getUniqueKey(evaluacion);
                     for ( String columnName : draft.keySet() ){
                         
                         if ( fieldsEvaluaciones.contains(columnName) ) {

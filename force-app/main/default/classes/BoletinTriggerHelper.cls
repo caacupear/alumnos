@@ -19,7 +19,7 @@ public with sharing class BoletinTriggerHelper {
         if ( boletinesConCambio.size() > 0 ) {
             Map<Id,Division__c> divisionesExistentes = new Map<Id,Division__c> ([SELECT CicloLectivo__c, Name FROM Division__c WHERE Id in: divisiones]);            
             List<Boletin__c> boletinesExistentes = [SELECT Division__r.CicloLectivo__c, Alumno__c FROM Boletin__c WHERE Division__c in: divisiones AND Alumno__c IN :alumnos];
-            Map<Id, Set<Id>> existentesMap = getCiclosAlumnos(boletinesExistentes);
+            Map<Id, Set<Id>> existentesMap = getCiclosAlumnos(boletinesExistentes); // Mapa ciclo => Set de Alumnos
 
             // Verifca si el alumno y division ya existen (y los agrega por si se repiten dentro de boletines tambien)
             for ( Id boletinId :boletinesConCambio) {
@@ -29,6 +29,11 @@ public with sharing class BoletinTriggerHelper {
                 Id value = nuevo.Alumno__c;
                 Id oldKey = divisionesExistentes.get(viejo.Division__c).CicloLectivo__c;
 
+                // Quita el viejo
+                if ( existentesMap.containsKey(oldKey) ) {
+                    existentesMap.get(oldKey).remove(viejo.Alumno__c);
+                }
+                // Si el alumno cambia de ciclo verifica, sino es un cambio de division
                 if ( existentesMap.containsKey(key) ) {
                     if ( existentesMap.get(key).contains(value) ) {
                         nuevo.addError('Ya existe un boletin para la division ' + nuevo.Division__c + ' y alumno ' + nuevo.Alumno__c );
@@ -36,10 +41,6 @@ public with sharing class BoletinTriggerHelper {
                     existentesMap.get(key).add(value);
                 } else {
                     existentesMap.put(key, new Set<Id>{ value });            
-                }
-                // Quita el viejo
-                if ( existentesMap.containsKey(oldKey) ) {
-                    existentesMap.get(oldKey).remove(viejo.Alumno__c);
                 }
             }
         }

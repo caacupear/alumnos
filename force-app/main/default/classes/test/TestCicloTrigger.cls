@@ -1,5 +1,5 @@
 @IsTest
-public with sharing class TestCicloTrigger {
+public class TestCicloTrigger {
     static private Map<String, CicloLectivo__c> ciclos; 
 
     @IsTest
@@ -38,7 +38,7 @@ public with sharing class TestCicloTrigger {
 
     static public Map<String, CicloLectivo__c> getCiclos(){
         if ( ciclos == null) {
-            Programa__c programa1 = TestProgramaTrigger.getProgramas().get('programa1');            
+            Programa__c programa1 = TestProgramaTrigger.getProgramas().get('P1');            
             ciclos = new Map<String, CicloLectivo__c>();
             ciclos.put( 'cicloPasado', new CicloLectivo__c( Name = 'ciclo1', Programa__c = programa1.Id, Inicio__c = Date.Today().addDays(-540), Fin__c = Date.Today().addDays(-181) ) );
             ciclos.put( 'cicloActual', new CicloLectivo__c( Name = 'ciclo2', Programa__c = programa1.Id, Inicio__c = Date.Today().addDays(-180), Fin__c = Date.Today().addDays(180) ) );
