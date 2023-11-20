@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>diasRestantes__c</fullName>
     <externalId>false</externalId>
-    <formula>If( esVigente__c, fin__c - today() , null)</formula>
+    <formula>If( Estado__c = &quot;Vigente&quot;, fin__c - today() , null)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>dias Restantes</label>
     <precision>18</precision>

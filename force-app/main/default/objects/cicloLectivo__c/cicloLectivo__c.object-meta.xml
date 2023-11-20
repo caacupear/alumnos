@@ -159,13 +159,13 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <gender>Feminine</gender>
+    <gender>Masculine</gender>
     <label>Ciclo Lectivo</label>
     <nameField>
         <label>Nombre de Ciclo Lectivo</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>cicloLectivo</pluralLabel>
+    <pluralLabel>Ciclos Lectivos</pluralLabel>
     <searchLayouts></searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

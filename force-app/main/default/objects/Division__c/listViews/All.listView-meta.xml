@@ -6,7 +6,7 @@
     <columns>anoEscolar__c</columns>
     <columns>subdivision__c</columns>
     <columns>cicloLectivo__c</columns>
-    <columns>esVigente__c</columns>
+    <columns>vacantes__c</columns>
     <filterScope>Everything</filterScope>
     <label>Todos</label>
 </ListView>

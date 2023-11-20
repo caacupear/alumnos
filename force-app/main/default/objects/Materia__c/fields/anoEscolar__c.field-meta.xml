@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>anoEscolar__c</fullName>
+    <description>El Año escolar representa el año dentro del programa. Se asume que un programa tiene como maximo 9 años</description>
     <externalId>false</externalId>
+    <inlineHelpText>Año dentro del programa, por ejemplo 1 seria primer año.</inlineHelpText>
     <label>Año escolar</label>
     <precision>1</precision>
     <required>true</required>

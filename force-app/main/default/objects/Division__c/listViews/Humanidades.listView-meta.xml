@@ -4,11 +4,17 @@
     <columns>NAME</columns>
     <columns>anoEscolar__c</columns>
     <columns>subdivision__c</columns>
+    <columns>inscriptos__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
-        <field>esVigente__c</field>
+        <field>estado__c</field>
         <operation>equals</operation>
-        <value>1</value>
+        <value>Vigente</value>
+    </filters>
+    <filters>
+        <field>Programa__c</field>
+        <operation>equals</operation>
+        <value>Humanidades</value>
     </filters>
     <label>Turno Mañana</label>
 </ListView>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Programa__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
     <label>Programa</label>
+    <referenceTo>Programa__c</referenceTo>
+    <relationshipLabel>Ciclo Lectivos</relationshipLabel>
+    <relationshipName>cicloLectivo</relationshipName>
     <required>false</required>
     <trackTrending>false</trackTrending>
-    <type>Picklist</type>
-    <valueSet>
-        <restricted>true</restricted>
-        <valueSetName>Programa</valueSetName>
-    </valueSet>
+    <type>Lookup</type>
 </CustomField>

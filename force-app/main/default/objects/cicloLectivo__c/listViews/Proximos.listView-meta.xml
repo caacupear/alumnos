@@ -4,7 +4,6 @@
     <columns>NAME</columns>
     <columns>inicio__c</columns>
     <columns>fin__c</columns>
-    <columns>Programa__c</columns>
     <columns>diasRestantes__c</columns>
     <filterScope>Mine</filterScope>
     <filters>

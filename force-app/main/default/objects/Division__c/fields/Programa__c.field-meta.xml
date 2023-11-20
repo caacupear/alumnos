@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Programa__c</fullName>
     <externalId>false</externalId>
-    <formula>Text(cicloLectivo__r.Programa__c)</formula>
+    <formula>cicloLectivo__r.Programa__r.Name</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Programa</label>
     <required>false</required>
