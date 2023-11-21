@@ -5,14 +5,13 @@ public class TestEvaluacionesController {
     static void testGetEvaluaciones(){
         
         Test.startTest();
-        Programa__c programa = TestProgramaTrigger.getProgramas().get('P1');
         Division__c division = TestDivisionTrigger.getDivisiones().get('1A');
         Grilla__c grilla = TestGrillaTrigger.getGrilla().get('lengua');
         TestEvaluacionesTrigger.getEvaluaciones();
         Boletin__c boletin = TestBoletinTrigger.getBoletines().get('Juan 1A');
 
         // asistencias del programa
-        EvaluacionesController.getPrograma(programa.Id);
+        EvaluacionesController.getPrograma(division.Id);
 
         // asistencias de la grilla
         EvaluacionesHelper.EvaluacionesGrilla result1 =  EvaluacionesController.getByGrilla(grilla.Id);
