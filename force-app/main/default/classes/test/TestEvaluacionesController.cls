@@ -30,7 +30,7 @@ public class TestEvaluacionesController {
 
     @IsTest
     static void testSaveByBoletin(){
-        Grilla__c grilla = TestDataFactory.getGrilla().get('M-1');
+        Grilla__c grilla = TestDataFactory.getGrilla().get('G-1');
         Boletin__c boletin = TestDataFactory.getBoletines().get('B-1');        
         
         List<Map<String, Object>>  draftValues = new List<Map<String, Object>>();
@@ -46,7 +46,7 @@ public class TestEvaluacionesController {
     @IsTest
     static void testSaveByDivision(){        
         Division__c division = TestDataFactory.getDivisiones().get('D-1');
-        Grilla__c grilla = TestDataFactory.getGrilla().get('M-1');
+        Grilla__c grilla = TestDataFactory.getGrilla().get('G-1');
         Boletin__c boletin = TestDataFactory.getBoletines().get('B-1');        
         List<Map<String, Object>>  draftValues = new List<Map<String, Object>>();
         draftValues.add( new Map<String,Object>{ 'Nota1__c' => 10, 'id' => boletin.Id } );
