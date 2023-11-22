@@ -1,15 +1,13 @@
 @IsTest
 public class TestBoletinTrigger {
-    static private Map<String, Boletin__c> boletines;
-
 
     @IsTest
     static void testDuplicates(){
         Test.startTest();
-        Division__c division1A = TestDivisionTrigger.getDivisiones().get('1A');
-        Division__c division1B = TestDivisionTrigger.getDivisiones().get('1B');
-        Contact alumnoJuan = TestContactTrigger.getAlumnos().get('Juan');
-        Contact alumnoAna = TestContactTrigger.getAlumnos().get('Ana');
+        Division__c division1A = TestDataFactory.getDivisiones().get('D-1');
+        Division__c division1B = TestDataFactory.getDivisiones().get('D-2');
+        Contact alumnoJuan = TestDataFactory.getAlumnos().get('A-1');
+        Contact alumnoAna = TestDataFactory.getAlumnos().get('A-2');
 
         Boletin__c boletinJuan1A = new Boletin__c( Division__c = division1A.Id, Alumno__c = alumnoJuan.Id);
         insert boletinJuan1A;
@@ -74,7 +72,7 @@ public class TestBoletinTrigger {
     static void testInscriptos(){
         Test.startTest();
         // CUANDO se crea un boletin de un alumno en lista de espera ENTONCES el alumno pasa a Inscripto
-        Boletin__c boletinJuan = TestBoletinTrigger.getBoletines().get('Juan 1A');
+        Boletin__c boletinJuan = TestDataFactory.getBoletines().get('B-1');
         Contact Juan = [Select estadoInscripcion__c FROM Contact WHERE Id =:boletinJuan.Alumno__c];
         System.assertEquals('Inscripto', Juan.estadoInscripcion__c);
 
@@ -88,19 +86,19 @@ public class TestBoletinTrigger {
 
         Test.startTest();
         // CUANDO crea un Boletin ENTONCES debe incrementar los inscriptos en la division
-        TestBoletinTrigger.getBoletines();
-        Division__c division1A = TestDivisionTrigger.getDivisiones().get('1A');
+        TestDataFactory.getBoletines();
+        Division__c division1A = TestDataFactory.getDivisiones().get('D-1');
         inscriptos = [Select Inscriptos__c From Division__c WHERE Id = :division1A.Id].Inscriptos__c;
-        System.assertEquals(2, inscriptos);
+        System.assertEquals(1, inscriptos);
 
         // CUANDO cambia la division de un boletin ENTONCES verifica que se baje el inscripto de la division vieja y se sume en la nueva
-        Boletin__c boletinJose = TestBoletinTrigger.getBoletines().get('Ana 1A');
-        Division__c division1B = TestDivisionTrigger.getDivisiones().get('1B');
+        Boletin__c boletinJose = TestDataFactory.getBoletines().get('B-1');
+        Division__c division1B = TestDataFactory.getDivisiones().get('D-2');
         boletinJose.Division__c = division1B.Id;
         update boletinJose;
 
         inscriptos = [Select Inscriptos__c From Division__c WHERE Id = :division1A.Id].Inscriptos__c;
-        System.assertEquals(1, inscriptos);
+        System.assertEquals(0, inscriptos);
 
         inscriptos = [Select Inscriptos__c From Division__c WHERE Id = :division1B.Id].Inscriptos__c;
         System.assertEquals(1, inscriptos);
@@ -119,23 +117,10 @@ public class TestBoletinTrigger {
         
 
         Test.startTest();
-        TestBoletinTrigger.getBoletines();
+        TestDataFactory.getBoletines();
         Division__c division = [Select Name, nombre__c From Division__c Limit 1];
         System.assertEquals(division.Name, division.nombre__c);
         Test.stopTest();
         
-    }
-    public static Map<String, Boletin__c> getBoletines(){
-        if ( boletines == null ) {
-            Division__c division = TestDivisionTrigger.getDivisiones().get('1A');
-            Contact alumnoJuan = TestContactTrigger.getAlumnos().get('Juan');
-            Contact alumnoAna = TestContactTrigger.getAlumnos().get('Ana');
-
-            boletines = new Map<String, Boletin__c>();
-            boletines.put( 'Juan 1A', new Boletin__c( Division__c = division.Id, Alumno__c = alumnoJuan.Id) );
-            boletines.put( 'Ana 1A', new Boletin__c( Division__c = division.Id, Alumno__c = alumnoAna.Id) );
-            insert boletines.values();
-        }
-        return boletines;
     }
 }

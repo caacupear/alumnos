@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldOverrides>
+        <field>fin__c</field>
+        <formula>DATE(year(cicloLectivo__c.fin__c) + 1,month(cicloLectivo__c.fin__c),day(cicloLectivo__c.fin__c))</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>inicio__c</field>
+        <formula>DATE(year(cicloLectivo__c.inicio__c) + 1,month(cicloLectivo__c.inicio__c),day(cicloLectivo__c.inicio__c))</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>Name</field>
+        <formula>SUBSTITUTE(cicloLectivo__c.Name, Text(Year(cicloLectivo__c.inicio__c)), Text(Year(cicloLectivo__c.inicio__c)+1))</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>Programa__c</field>
+        <formula>cicloLectivo__c.Programa__c</formula>
+    </fieldOverrides>
+    <label>Crear Proximo Ciclo</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <quickActionLayout>
+        <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
+        <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>inicio__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Name</field>
+                <uiBehavior>Required</uiBehavior>
+            </quickActionLayoutItems>
+        </quickActionLayoutColumns>
+        <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>fin__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+        </quickActionLayoutColumns>
+    </quickActionLayout>
+    <targetObject>cicloLectivo__c</targetObject>
+    <targetParentField>cicloAnterior__c</targetParentField>
+    <type>Create</type>
+</QuickAction>

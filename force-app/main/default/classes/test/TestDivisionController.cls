@@ -4,7 +4,7 @@ public class TestDivisionController {
     static void testController(){
         
         Test.startTest();
-        Division__c division = TestDivisionTrigger.getDivisiones().get('1A');
+        Division__c division = TestDataFactory.getDivisiones().get('D-1');
 
         DivisionController.getCiclosVigentes() ;
 
