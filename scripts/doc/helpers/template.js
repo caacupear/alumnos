@@ -5,7 +5,7 @@ const {merge} = require('./merge');
 const TEMPLATE_ROOT_FOLDER = process.cwd() + '/templates';
 
 function isObjectEmpty (objectName) {
-    return Object.keys(objectName).length === 0 && objectName.constructor === Object;
+    return objectName && Object.keys(objectName).length === 0 && objectName.constructor === Object;
 }
 
 

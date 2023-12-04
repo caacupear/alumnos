@@ -118,6 +118,7 @@ function getContextCache(fileName) {
 
 async function getContext(items, opciones) {
     let contexts;
+
     // flag -i lee del archivo cache
     if ( opciones && 'i' in opciones ) {
         contexts = getContextCache(opciones.i);                
@@ -126,7 +127,7 @@ async function getContext(items, opciones) {
         contexts = getContextCache(opciones.r);
         const itemsEnCache = contexts.map( object => object.fullName );
         contexts = await getObjects(itemsEnCache);
-    } else if ( items?.length === 0 ) {
+    } else {
     // Sino buscar la metadata segun los items
         contexts = await getObjects(items);
     }

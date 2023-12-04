@@ -5,7 +5,6 @@ const prompts = require('prompts');
 const helpers = {
     'object': require( './object'),
     'class': require( './class'),
-    'omni': require( './omni'),
     'new': require( './new'),
 }
 

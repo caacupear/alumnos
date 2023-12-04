@@ -9,7 +9,7 @@ const conn = new jsforce.Connection({
 async function connect() {
     const username = process.env.SF_USERNAME; 
     const password = process.env.SF_PASSWORD; 
-    
+
     if ( username === undefined || password === undefined) {
         console.error('Por favor configure SF_USERNAME y SF_PASSWORD como variables de entorno');
         console.warn('1. Puede clonar el archivo .env.sample ');
