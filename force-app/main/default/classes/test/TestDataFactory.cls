@@ -1,5 +1,5 @@
 // TODO: Que puedan las relaciones estar tambien en memoria
-
+@IsTest
 public class TestDataFactory {    
     static final Boolean DEFAULT_INSERT = true;
     static final Integer DEFAULT_RECORDS = 3;
