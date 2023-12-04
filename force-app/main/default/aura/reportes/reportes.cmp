@@ -1,53 +1,25 @@
-<aura:component implements="lightning:actionOverride,force:hasRecordId,force:lightningQuickAction">
+<aura:component implements="lightning:actionOverride,force:hasRecordId,force:lightningQuickAction" controller="ConstanciaHelper">
     <aura:attribute name="record" type="Object" />
     <aura:attribute name="componentRecord" type="Object" />
+    <aura:attribute name="constancias" type="List" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
     <lightning:accordion aura:id="accordion" activeSectionName="A">
-        <lightning:accordionSection name="A" label="Certificado de Alumno regular">
-            <aura:set attribute="actions">
-                <lightning:buttonMenu aura:id="menu" alternativeText="Acciones" iconSize="x-small" menuAlignment="right">
-                    <lightning:menuItem value="ver" label="Ver" />
-                    <lightning:menuItem value="pdf" label="PDF" />
-                </lightning:buttonMenu>
-            </aura:set>
-            <aura:set attribute="body">
-                <p>Lorem impsum</p>
-            </aura:set>
-        </lightning:accordionSection>
-        <lightning:accordionSection name="A" label="Certificado de Titulo en tramite">
-            <aura:set attribute="actions">
-                <lightning:buttonMenu aura:id="menu" alternativeText="Acciones" iconSize="x-small" menuAlignment="right">
-                    <lightning:menuItem value="ver" label="Ver" />
-                    <lightning:menuItem value="pdf" label="PDF" />
-                </lightning:buttonMenu>
-            </aura:set>
-            <aura:set attribute="body">
-                <p>Lorem impsum</p>
-            </aura:set>
-        </lightning:accordionSection>
-        <lightning:accordionSection name="A" label="Constancia de ultimo año">
-            <aura:set attribute="actions">
-                <lightning:buttonMenu aura:id="menu" alternativeText="Acciones" iconSize="x-small" menuAlignment="right">
-                    <lightning:menuItem value="ver" label="Ver" />
-                    <lightning:menuItem value="pdf" label="PDF" />
-                </lightning:buttonMenu>
-            </aura:set>
-            <aura:set attribute="body">
-                <p>Lorem impsum</p>
-            </aura:set>
-        </lightning:accordionSection>
-        <lightning:accordionSection name="A" label="Reserva de vacante">
-            <aura:set attribute="actions">
-                <lightning:buttonMenu aura:id="menu" alternativeText="Acciones" iconSize="x-small" menuAlignment="right">
-                    <lightning:menuItem value="ver" label="Ver" />
-                    <lightning:menuItem value="pdf" label="PDF" />
-                </lightning:buttonMenu>
-            </aura:set>
-            <aura:set attribute="body">
-                <p>Lorem impsum</p>
-                <lightning:button label="Descargas" iconName="utility:download"
-                onclick="{!c.navigateToComponent}"/>                
-            </aura:set>
-        </lightning:accordionSection>
+        <aura:iteration items="{!v.constancias}" var="constancia">
+            <lightning:accordionSection name="A" label="{!constancia.Name}">
+                <aura:set attribute="actions">
+                    <aura:if isTrue="{!constancia.Adjuntar__c}">
+                        <button type="button" id="{!constancia.Id}" onclick="{!c.generate}">Generar</button> 
+                        <aura:set attribute="else">
+                            <button type="button" id="{!constancia.Id}" onclick="{!c.view}">Ver</button> 
+                        </aura:set>
+                    </aura:if>
+                </aura:set>
+                <aura:set attribute="body">
+                    <p>{!constancia.Descripcion__c}</p>
+                </aura:set>
+            </lightning:accordionSection>
+        </aura:iteration>
     </lightning:accordion>
 </aura:component>

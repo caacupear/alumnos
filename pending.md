@@ -1,7 +1,6 @@
 [x] Unique key por trigger
 
 
-
 Constancias
 [ ] Ver Download 
 [ ] Enviar por email o whastapp

@@ -1,6 +1,0 @@
-<aura:component implements="force:hasRecordId">
-    <aura:attribute name="record" type="Object" />
-    <aura:attribute name="componentRecord" type="Object" />
-
-    <c:reservaVacante recordId="{!v.recordId}" record-id="{!v.recordId}"></c:reservaVacante>
-</aura:component>	
