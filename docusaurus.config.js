@@ -3,10 +3,10 @@
 
 export default {
   title: "Caacupe",
-  url: "https://caacupe.github.io", // Your website URL
+  url: "https://caacupear.github.io", // Your website URL
   baseUrl: "/alumnos",
-  projectName: "caacupe.github.io",
-  organizationName: "caacupe",
+  projectName: "caacupear.github.io",
+  organizationName: "Caacupe",
   trailingSlash: false,
   onBrokenLinks: "log",
   onBrokenMarkdownLinks: "warn",
@@ -60,9 +60,27 @@ export default {
         items: [
           {
             type: "docSidebar",
+            sidebarId: "configuracion",
+            position: "left",
+            label: "Configuración"
+          },
+          {
+            type: "docSidebar",
             sidebarId: "inscripcion",
             position: "left",
-            label: "Inscripcion"
+            label: "Inscripción"
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "asistencias",
+            position: "left",
+            label: "Asistencias"
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "evaluaciones",
+            position: "left",
+            label: "Evaluaciones"
           },
           // {
           //   to: 'blog',
