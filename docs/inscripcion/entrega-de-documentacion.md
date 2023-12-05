@@ -3,4 +3,4 @@ sidebar_position: 3
 tags: [secretaria]
 ---
 
-# Emision de certificado de Alumno regular
+# Entrega de Documentación
