@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "eslint **/{aura,lwc}/**",
     "test": "npm run test:unit",
+    "start": "docusaurus start",
     "build": "docusaurus build",
     "test:unit": "sfdx-lwc-jest",
     "test:unit:watch": "sfdx-lwc-jest --watch",
@@ -21,12 +22,15 @@
   "devDependencies": {
     "@docusaurus/core": "^3.0.1",
     "@docusaurus/preset-classic": "^3.0.1",
+    "@docusaurus/theme-mermaid": "^3.0.1",
     "@lwc/eslint-plugin-lwc": "^1.1.2",
+    "@mdx-js/react": "^3.0.0",
     "@prettier/plugin-xml": "^2.0.1",
     "@salesforce/eslint-config-lwc": "^3.2.3",
     "@salesforce/eslint-plugin-aura": "^2.0.0",
     "@salesforce/eslint-plugin-lightning": "^1.0.0",
     "@salesforce/sfdx-lwc-jest": "^1.1.0",
+    "docusaurus-plugin-drawio": "^0.4.0",
     "dotenv": "^16.3.1",
     "eslint": "^8.11.0",
     "eslint-plugin-import": "^2.25.4",
@@ -37,6 +41,7 @@
     "lint-staged": "^12.3.7",
     "prettier": "^2.6.0",
     "prettier-plugin-apex": "^1.10.0",
+    "prism-react-renderer": "^2.3.0",
     "prompts": "^2.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
