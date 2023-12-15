@@ -1,56 +1,78 @@
 public with sharing class ConstanciaHelper {
-  private static Map<String, String> staticFieldsVal;
-  private static Set<String> fieldsVal;
+  private static Map<String, String> formulasVal;
+  private static Map<String, String> mapObjects = new Map<String, string>{
+    'constancia' => 'Constancia__c',
+    'contacto' => 'Contact',
+    'boletin' => 'Boletin__c',
+    'division' => 'Division__c',
+    'ciclo' => 'CicloLectivo__c',
+    'programa' => 'Programa__c'
+  };
 
-  public static Map<String, String> staticFields {
+  private static Map<String, String> formulas {
     get {
-      if (staticFieldsVal == null) {
+      if (formulasVal == null) {
         Date hoy = Date.today();
-        staticFieldsVal = new Map<String, String>{
+        formulasVal = new Map<String, String>{
           'fecha' => hoy.format(),
           'hoy_dia' => String.valueOf(hoy.day()),
           'hoy_mes' => String.valueOf(hoy.month()),
           'hoy_anio' => String.valueOf(hoy.year())
         };
       }
-      return staticFieldsVal;
+      return formulasVal;
     }
     set {
-      staticFieldsVal = value;
+      formulasVal = value;
     }
   }
 
-  public static Set<String> fields {
-    get {
-      if (fieldsVal == null) {
-        fieldsVal = new Set<String>();
-        fieldsVal.addAll(staticFields.keySet());
-        Set<String> contactFields = Contact.getSobjectType()
-          .getDescribe()
-          .fields.getMap()
-          .keySet();
-        fieldsVal.addAll(contactFields);
-        fieldsVal.add('titulo');
+  private static String checkContentVariables(String content) {
+    if (content != null) {
+      Map<String, Set<String>> mapFields = getMapFields(content);
+      for (String objeto : mapFields.keySet()) {
+        Set<String> notFound = notFoundFields(objeto, mapFields.get(objeto));
+
+        if (notFound.size() > 0) {
+          String errorMessage = String.format(
+            'Hay campos que no existen en el {0}: {1}',
+            new List<Object>{ objeto, notFound }
+          );
+          return errorMessage;
+        }
       }
-      return fieldsVal;
     }
-    set {
-      fields = value;
-    }
+    return null;
   }
 
   public static void validateContent(List<Constancia__c> constancias) {
     for (Constancia__c constancia : constancias) {
-      Set<String> variables = getVariables(constancia.Contenido__c);
-      Boolean hasAllaVariables = fields.containsAll(variables);
-      if (!hasAllaVariables) {
-        variables.removeAll(fields);
-        String inexistentes = String.join(variables, ',');
-        constancia.addError(
-          'Hay campos que no existen en el contact: ' + inexistentes
-        );
+      String errorMessage = checkContentVariables(constancia.Nombre__c);
+      if (String.isNotEmpty(errorMessage)) {
+        constancia.Nombre__c.addError(errorMessage);
+      }
+      errorMessage = checkContentVariables(constancia.Contenido__c);
+      if (String.isNotEmpty(errorMessage)) {
+        constancia.Contenido__c.addError(errorMessage);
       }
     }
+  }
+
+  private static Set<String> notFoundFields(String objeto, Set<String> fields) {
+    Set<String> objectFields;
+    if (objeto == 'formulas') {
+      objectFields = formulas.keySet();
+    } else {
+      String objectName = mapObjects.get(objeto);
+      objectFields = Schema.getGlobalDescribe()
+        .get(objectName)
+        .getDescribe()
+        .fields.getMap()
+        .keySet();
+    }
+
+    fields.removeAll(objectFields);
+    return fields;
   }
 
   private static boolean hasSObjectField(String fieldName, SObject so) {
@@ -61,8 +83,47 @@ public with sharing class ConstanciaHelper {
       .contains(fieldName.toLowerCase());
   }
 
-  public static Set<String> getKeys(String contentido) {
-    Pattern varRegex = Pattern.compile('\\{[a-zA-Z_0-9]*\\}');
+  private static String[] splitObject(String key) {
+    String[] match = key.substringBetween('{', '}')
+      .toLowerCase()
+      .split('\\.', 2);
+    String objeto = match.size() == 2
+      ? match.get(0)
+      : formulas.containsKey(match.get(0)) ? 'formulas' : 'contacto';
+    String variable = match.size() == 2 ? match.get(1) : match.get(0);
+    return new List<String>{ objeto, variable };
+  }
+
+  private static Map<String, Set<String>> getMapFields(String contentido) {
+    Pattern varRegex = Pattern.compile('\\{[a-zA-Z_0-9\\.]*\\}');
+    Matcher matcher = varRegex.matcher(contentido);
+    Set<String> groupsValidos = mapObjects.keySet();
+    Map<String, Set<String>> mapFields = new Map<String, Set<String>>();
+
+    while (matcher.find()) {
+      String[] match = splitObject(matcher.group());
+      String objeto = match[0];
+      String variable = match[1];
+
+      if (groupsValidos.contains(objeto) || objeto == 'formulas') {
+        if (!mapFields.containsKey(objeto)) {
+          mapFields.put(objeto, new Set<String>{ variable });
+        } else {
+          mapFields.get(objeto).add(variable);
+        }
+      } else {
+        String errorMessage = String.format(
+          'El objeto {0} no esta en la lista de posibles objetos: {1}',
+          new List<Object>{ objeto, groupsValidos }
+        );
+        throw new ApplicationException(errorMessage);
+      }
+    }
+    return mapFields;
+  }
+
+  private static Set<String> getKeys(String contentido) {
+    Pattern varRegex = Pattern.compile('\\{[a-zA-Z_0-9\\.]*\\}');
     Matcher matcher = varRegex.matcher(contentido);
     Set<String> variables = new Set<String>();
     while (matcher.find()) {
@@ -71,37 +132,24 @@ public with sharing class ConstanciaHelper {
     return variables;
   }
 
-  public static Set<String> getVariables(String contentido) {
-    Pattern varRegex = Pattern.compile('\\{[a-zA-Z_0-9]*\\}');
-    Matcher matcher = varRegex.matcher(contentido);
-    Set<String> variables = new Set<String>();
-    while (matcher.find()) {
-      variables.add(matcher.group().substringBetween('{', '}').toLowerCase());
-    }
-    variables.removeAll(fields);
-
-    return variables;
-  }
-
   public static String mergeFields(
     String contentido,
-    Contact contact,
-    Map<String, Object> fields
+    Map<String, SObject> objects
   ) {
     Map<String, Object> mapVarValues = new Map<String, String>();
 
     for (String key : getKeys(contentido)) {
-      String variable = key.substringBetween('{', '}').toLowerCase();
-      if (!mapVarValues.containsKey(key)) {
-        if (fields.containsKey(variable)) {
-          mapVarValues.put(key, fields.get(variable));
-        } else if (hasSObjectField(variable, contact)) {
-          mapVarValues.put(key, contact.get(variable));
-        } else {
-          mapVarValues.put(key, key);
-        }
+      String[] match = splitObject(key);
+      String objeto = match[0];
+      String variable = match[1];
+
+      if (objeto == 'formulas') {
+        mapVarValues.put(key, formulas.get(variable));
+      } else {
+        mapVarValues.put(key, objects.get(objeto).get(variable));
       }
     }
+
     for (String key : mapVarValues.keySet()) {
       contentido = contentido.replace(
         key,
@@ -117,49 +165,130 @@ public with sharing class ConstanciaHelper {
     return [SELECT Id, Name, Descripcion__c, Adjuntar__c FROM Constancia__c];
   }
 
-  static public String getContent(String idConstancia, String idContact) {
-    // Query Data
+  private static Map<String, String> getMapRecordId(Id idContact) {
+    Contact contactLookForId = [
+      SELECT
+        Id,
+        UltimoBoletin__c,
+        UltimoBoletin__r.Division__c,
+        UltimoBoletin__r.Division__r.CicloLectivo__c,
+        UltimoBoletin__r.Division__r.CicloLectivo__r.Programa__c
+      FROM Contact
+      WHERE Id = :idContact
+    ];
+
+    return (new Map<String, String>{
+      'contacto' => contactLookForId.Id,
+      'boletin' => contactLookForId.UltimoBoletin__c,
+      'division' => contactLookForId.UltimoBoletin__r.Division__c,
+      'ciclo' => contactLookForId.UltimoBoletin__r.Division__r.CicloLectivo__c,
+      'programa' => contactLookForId.UltimoBoletin__r.Division__r.CicloLectivo__r.Programa__c
+    });
+  }
+
+  private static ContentVersion attachDocument(
+    String title,
+    Blob content,
+    Id parentId,
+    String fileType
+  ) {
+    // Generate Attachment
+    ContentVersion cVersion = new ContentVersion(
+      PathOnClient = title + '.' + fileType,
+      Title = title,
+      VersionData = content,
+      IsMajorVersion = true
+    );
+    ContentDocumentLink existDocument = [
+      SELECT ContentDocumentId
+      FROM ContentDocumentLink
+      WHERE LinkedEntityId = :parentId AND ContentDocument.title = :title
+    ];
+    // Si ya existe crea una nueva version
+    if (existDocument != null) {
+      cVersion.ContentDocumentId = existDocument.ContentDocumentId;
+      insert cVersion;
+    } else {
+      insert cVersion;
+      Id documentId = [
+        SELECT ContentDocumentId
+        FROM ContentVersion
+        WHERE Id = :cVersion.Id
+      ]
+      .ContentDocumentId;
+      ContentDocumentLink documentLink = new ContentDocumentLink(
+        LinkedEntityId = parentId,
+        ContentDocumentId = documentId,
+        shareType = 'V'
+      );
+      insert documentLink;
+    }
+
+    // ContentDistribution cd = new ContentDistribution();
+    // cd.name = cVersion.Title;
+    // cd.ContentVersionId = cVersion.id;
+    // cd.PreferencesAllowOriginalDownload = true;
+    // cd.PreferencesAllowPDFDownload = true;
+    // cd.PreferencesAllowViewInBrowser = true;
+    // insert cd;
+    return cVersion;
+  }
+
+  public static String[] getContent(String idConstancia, String idContact) {
     Constancia__c constancia = [
-      SELECT Name, Nombre__c, Contenido__c, guardaUltimo__c, Adjuntar__c
+      SELECT Name, Nombre__c, Contenido__c, Adjuntar__c, CriterioJson__c
       FROM Constancia__c
       WHERE Id = :idConstancia
     ];
-    Set<String> variables = getVariables(constancia.Contenido__c);
-    Contact contacto = Database.query(
-      'SELECT ' +
-        String.join(variables, ',') +
-        ' From Contact WHERE Id = :idContact'
+
+    if (constancia.CriterioJson__c != null) {
+      Boolean valido = CriteriaHelper.validateCriteria(
+        constancia.CriterioJson__c,
+        idContact
+      );
+      if (!valido) {
+        throw new ApplicationException('No cumple los criterios');
+      }
+    }
+
+    // TODO: Validar si no es Adjuntar__c ?
+    // Obtiene objectRecords segun las {} de Contenido__c y Nombre__c
+    Map<String, SObject> objectRecords = new Map<String, SObject>{
+      'constancia' => constancia
+    };
+    Map<String, String> mapRecordId = getMapRecordId(idContact);
+    Map<String, Set<String>> mapFields = getMapFields(
+      constancia.Nombre__c + ' ' + constancia.Contenido__c
     );
-    return mergeFields(constancia.Contenido__c, contacto, staticFields);
+    for (String objeto : mapFields.keySet()) {
+      if (objeto != 'formulas' && objeto != 'constancia') {
+        String objectName = mapObjects.get(objeto);
+        SObject record = UtilHelper.getRecordById(
+          objectName,
+          mapFields.get(objeto),
+          mapRecordId.get(objeto)
+        );
+        objectRecords.put(objeto, record);
+      }
+    }
+    // Merge content y titulo
+    String content = mergeFields(constancia.Contenido__c, objectRecords);
+    String titulo = mergeFields(constancia.Nombre__c, objectRecords);
+    return new List<String>{ titulo, content };
   }
 
   @AuraEnabled
-  public static Attachment generatePDF(String idConstancia, String idContact) {
-    Constancia__c constancia = [
-      SELECT Name, Nombre__c, Contenido__c, guardaUltimo__c, Adjuntar__c
-      FROM Constancia__c
-      WHERE Id = :idConstancia
-    ];
-
-    String content = getContent(idConstancia, idContact);
-    // Generate PDF
+  public static ContentVersion generatePDF(
+    String idConstancia,
+    String idContact
+  ) {
+    // Query Data
+    String[] content = getContent(idConstancia, idContact);
+    // Genera el  PDF
     Pagereference pg = Page.RenderAsPDF;
-    System.debug(content);
-    //content = '<p><strong>Reserva Vacante</strong></p><p><br></p><p>Se deja constancia que, Juan <span style="color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);">De los palotes</span></p><p><br></p><p>que acredita identidad con con DNI número 233333</p><p><br></p><p>TIENE RESERVADA UNA VACANTE EN ESTE INSTITUTO.-</p><p><br></p><p>En la Ciudad ';
-    pg.getParameters().put('body', EncodingUtil.urlEncode(content, 'UTF-8'));
+    pg.getParameters().put('body', EncodingUtil.urlEncode(content[1], 'UTF-8'));
     Blob pdf = pg.getContentAsPDF();
 
-    // Generate Attachment
-    Attachment objAttachment = new Attachment();
-    objAttachment.Name = Constancia__c.Nombre__c + '.pdf';
-    objAttachment.ParentId = idContact;
-    objAttachment.Body = pdf;
-    objAttachment.IsPrivate = false;
-
-    if (constancia.Adjuntar__c) {
-      insert objAttachment;
-    }
-
-    return objAttachment;
+    return attachDocument(content[0], pdf, idContact, 'pdf');
   }
 }
