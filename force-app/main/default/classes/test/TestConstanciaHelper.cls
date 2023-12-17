@@ -36,4 +36,32 @@ public with sharing class TestConstanciaHelper {
       // Add assertions here about the expected exception
     }
   }
+
+  @IsTest
+  static void testFetchConstancias() {
+    TestDataFactory.getConstancias();
+    Test.startTest();
+    List<Constancia__c> constancias = ConstanciaHelper.fetchConstancias();
+    Test.stopTest();
+
+    Assert.areEqual(
+      TestDataFactory.DEFAULT_RECORDS,
+      constancias.size(),
+      'Deben haber 3 constancias'
+    );
+  }
+
+  @IsTest
+  static void testGeneratePDF() {
+    Constancia__c constancia = TestDataFactory.getConstancias().get('C-1');
+    Contact contacto = TestDataFactory.getAlumnos().get('A-1');
+    Test.startTest();
+    ContentVersion content = ConstanciaHelper.generatePDF(
+      constancia.Id,
+      contacto.Id
+    );
+    Test.stopTest();
+
+    Assert.areEqual('First1 Last1', content.VersionData.toString());
+  }
 }

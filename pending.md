@@ -1,19 +1,3 @@
-Constancias
-[ ] Pasar todas las constancias que estan en el drive
-[ ] Generar formulas en el contacto (division actual, titulo del programa)
-[ ] Escribir los casos de uso
-[ ] Configurar en constancia criterio para imprimirla o generarla
-[X] Ver Download
-[ ] Header y Footer ( dependa del propgrama)
-[ ] Enviar por email o whastapp
-[ ] Vacantes y reservas de inscripciones
-
-Asistencias
-[ ] Diaria (Fijo dia, elijo division y ahi tengo el masivo)
-[ ] Asistencias en Boletin que aparezcan todas las semanas
-[ ] Aparezca el total de faltas
-[ ] Bloquear cambio de semanas cuando esta editando
-
 En creacion de Boletin
 [ ] Que el alumno cumpla los requisitos del curso que tenga el año previo aprobado ??
 [ ] boletin regla de alumno Inscripto ?

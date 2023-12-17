@@ -28,7 +28,9 @@ public with sharing class RenderAsPDFController {
         params.get('idConstancia'),
         params.get('idContact')
       );
-      body = content[1];
+      body = content[2] + content[1] + content[3];
+      header = content[4];
+      footer = content[5];
     }
   }
 }

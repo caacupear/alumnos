@@ -17,7 +17,9 @@ public with sharing class ConstanciaHelper {
           'fecha' => hoy.format(),
           'hoy_dia' => String.valueOf(hoy.day()),
           'hoy_mes' => String.valueOf(hoy.month()),
-          'hoy_anio' => String.valueOf(hoy.year())
+          'hoy_anio' => String.valueOf(hoy.year()),
+          'pagenumber' => '<span class="pagenumber"/>',
+          'pagecount' => '<span class="pagecount"/>'
         };
       }
       return formulasVal;
@@ -27,7 +29,7 @@ public with sharing class ConstanciaHelper {
     }
   }
 
-  private static String checkContentVariables(String content) {
+  public static String checkContentVariables(String content) {
     if (content != null) {
       Map<String, Set<String>> mapFields = getMapFields(content);
       for (String objeto : mapFields.keySet()) {
@@ -73,14 +75,6 @@ public with sharing class ConstanciaHelper {
 
     fields.removeAll(objectFields);
     return fields;
-  }
-
-  private static boolean hasSObjectField(String fieldName, SObject so) {
-    return so.getSobjectType()
-      .getDescribe()
-      .fields.getMap()
-      .keySet()
-      .contains(fieldName.toLowerCase());
   }
 
   private static String[] splitObject(String key) {
@@ -199,14 +193,15 @@ public with sharing class ConstanciaHelper {
       VersionData = content,
       IsMajorVersion = true
     );
-    ContentDocumentLink existDocument = [
+    List<ContentDocumentLink> existDocument = [
       SELECT ContentDocumentId
       FROM ContentDocumentLink
       WHERE LinkedEntityId = :parentId AND ContentDocument.title = :title
+      LIMIT 1
     ];
     // Si ya existe crea una nueva version
-    if (existDocument != null) {
-      cVersion.ContentDocumentId = existDocument.ContentDocumentId;
+    if (existDocument.size() > 0) {
+      cVersion.ContentDocumentId = existDocument.get(0).ContentDocumentId;
       insert cVersion;
     } else {
       insert cVersion;
@@ -250,15 +245,30 @@ public with sharing class ConstanciaHelper {
         throw new ApplicationException('No cumple los criterios');
       }
     }
-
-    // TODO: Validar si no es Adjuntar__c ?
     // Obtiene objectRecords segun las {} de Contenido__c y Nombre__c
     Map<String, SObject> objectRecords = new Map<String, SObject>{
       'constancia' => constancia
     };
+    // TODO: Performance el query al contact y program podria hacerlo una vez y no dos
     Map<String, String> mapRecordId = getMapRecordId(idContact);
+    // Obtiene Header y Footer del Programa
+    Programa__c programa = [
+      SELECT Header__c, Footer__c, PageHeader__c, PageFooter__c
+      FROM Programa__c
+      WHERE Id = :mapRecordId.get('programa')
+    ];
     Map<String, Set<String>> mapFields = getMapFields(
-      constancia.Nombre__c + ' ' + constancia.Contenido__c
+      String.format(
+        '{0} {1} {2} {3} {4} {5}',
+        new List<String>{
+          constancia.Nombre__c,
+          constancia.Contenido__c,
+          programa.Header__c,
+          programa.Footer__c,
+          programa.PageHeader__c,
+          programa.PageFooter__c
+        }
+      )
     );
     for (String objeto : mapFields.keySet()) {
       if (objeto != 'formulas' && objeto != 'constancia') {
@@ -274,7 +284,27 @@ public with sharing class ConstanciaHelper {
     // Merge content y titulo
     String content = mergeFields(constancia.Contenido__c, objectRecords);
     String titulo = mergeFields(constancia.Nombre__c, objectRecords);
-    return new List<String>{ titulo, content };
+    String header = programa.Header__c == null
+      ? ''
+      : mergeFields(programa.Header__c, objectRecords);
+    String footer = programa.Footer__c == null
+      ? ''
+      : mergeFields(programa.Footer__c, objectRecords);
+    String pageHeader = programa.PageHeader__c == null
+      ? ''
+      : mergeFields(programa.PageHeader__c, objectRecords);
+    String pageFooter = programa.PageFooter__c == null
+      ? ''
+      : mergeFields(programa.PageFooter__c, objectRecords);
+
+    return new List<String>{
+      titulo,
+      content,
+      header,
+      footer,
+      pageHeader,
+      pageFooter
+    };
   }
 
   @AuraEnabled
@@ -286,9 +316,25 @@ public with sharing class ConstanciaHelper {
     String[] content = getContent(idConstancia, idContact);
     // Genera el  PDF
     Pagereference pg = Page.RenderAsPDF;
-    pg.getParameters().put('body', EncodingUtil.urlEncode(content[1], 'UTF-8'));
-    Blob pdf = pg.getContentAsPDF();
+    String body = EncodingUtil.urlEncode(
+      content[2] + content[1] + content[3],
+      'UTF-8'
+    );
 
+    pg.getParameters().put('body', body);
+    if (content[4] != '') {
+      pg.getParameters()
+        .put('header', EncodingUtil.urlEncode(content[4], 'UTF-8'));
+    }
+    if (content[5] != '') {
+      pg.getParameters()
+        .put('footer', EncodingUtil.urlEncode(content[5], 'UTF-8'));
+    }
+    Blob pdf = Test.isRunningTest()
+      ? Blob.valueOf(content[1])
+      : pg.getContentAsPDF();
+
+    // TODO: Validar si no es Adjuntar__c ?
     return attachDocument(content[0], pdf, idContact, 'pdf');
   }
 }
