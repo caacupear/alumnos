@@ -231,7 +231,13 @@ public with sharing class ConstanciaHelper {
 
   public static String[] getContent(String idConstancia, String idContact) {
     Constancia__c constancia = [
-      SELECT Name, Nombre__c, Contenido__c, Adjuntar__c, CriterioJson__c
+      SELECT
+        Name,
+        Nombre__c,
+        Contenido__c,
+        Adjuntar__c,
+        CriterioJson__c,
+        IncluirModeloPrograma__c
       FROM Constancia__c
       WHERE Id = :idConstancia
     ];
@@ -284,10 +290,12 @@ public with sharing class ConstanciaHelper {
     // Merge content y titulo
     String content = mergeFields(constancia.Contenido__c, objectRecords);
     String titulo = mergeFields(constancia.Nombre__c, objectRecords);
-    String header = programa.Header__c == null
+    String header = !constancia.IncluirModeloPrograma__c &&
+      programa.Header__c == null
       ? ''
       : mergeFields(programa.Header__c, objectRecords);
-    String footer = programa.Footer__c == null
+    String footer = !constancia.IncluirModeloPrograma__c &&
+      programa.Footer__c == null
       ? ''
       : mergeFields(programa.Footer__c, objectRecords);
     String pageHeader = programa.PageHeader__c == null
