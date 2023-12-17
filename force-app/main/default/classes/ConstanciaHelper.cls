@@ -290,14 +290,16 @@ public with sharing class ConstanciaHelper {
     // Merge content y titulo
     String content = mergeFields(constancia.Contenido__c, objectRecords);
     String titulo = mergeFields(constancia.Nombre__c, objectRecords);
-    String header = !constancia.IncluirModeloPrograma__c &&
-      programa.Header__c == null
-      ? ''
-      : mergeFields(programa.Header__c, objectRecords);
-    String footer = !constancia.IncluirModeloPrograma__c &&
-      programa.Footer__c == null
-      ? ''
-      : mergeFields(programa.Footer__c, objectRecords);
+
+    if (constancia.IncluirModeloPrograma__c) {
+      String header = programa.Header__c == null
+        ? ''
+        : mergeFields(programa.Header__c, objectRecords);
+      String footer = programa.Footer__c == null
+        ? ''
+        : mergeFields(programa.Footer__c, objectRecords);
+      content = header + content + footer;
+    }
     String pageHeader = programa.PageHeader__c == null
       ? ''
       : mergeFields(programa.PageHeader__c, objectRecords);
@@ -305,14 +307,7 @@ public with sharing class ConstanciaHelper {
       ? ''
       : mergeFields(programa.PageFooter__c, objectRecords);
 
-    return new List<String>{
-      titulo,
-      content,
-      header,
-      footer,
-      pageHeader,
-      pageFooter
-    };
+    return new List<String>{ titulo, content, pageHeader, pageFooter };
   }
 
   @AuraEnabled
@@ -324,19 +319,15 @@ public with sharing class ConstanciaHelper {
     String[] content = getContent(idConstancia, idContact);
     // Genera el  PDF
     Pagereference pg = Page.RenderAsPDF;
-    String body = EncodingUtil.urlEncode(
-      content[2] + content[1] + content[3],
-      'UTF-8'
-    );
 
-    pg.getParameters().put('body', body);
-    if (content[4] != '') {
+    pg.getParameters().put('body', EncodingUtil.urlEncode(content[1], 'UTF-8'));
+    if (content[2] != '') {
       pg.getParameters()
-        .put('header', EncodingUtil.urlEncode(content[4], 'UTF-8'));
+        .put('header', EncodingUtil.urlEncode(content[2], 'UTF-8'));
     }
-    if (content[5] != '') {
+    if (content[3] != '') {
       pg.getParameters()
-        .put('footer', EncodingUtil.urlEncode(content[5], 'UTF-8'));
+        .put('footer', EncodingUtil.urlEncode(content[3], 'UTF-8'));
     }
     Blob pdf = Test.isRunningTest()
       ? Blob.valueOf(content[1])
