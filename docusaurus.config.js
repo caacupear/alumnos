@@ -82,6 +82,12 @@ export default {
             position: "left",
             label: "Evaluaciones"
           },
+          {
+            type: "docSidebar",
+            sidebarId: "metricas",
+            position: "left",
+            label: "Metricas"
+          },
           // {
           //   to: 'blog',
           //   label: 'Blog',

@@ -16,8 +16,8 @@ slug: /
 mindmap
   root((Gestion))
     Comunidad
-    Programa de Incentivos
-    Gestion de Contenidos
+    Incentivos
+    Contenidos
     Microemprendedores
     Donaciones
 ```
@@ -29,12 +29,12 @@ mindmap
   - Evaluaciones
 - Comunidad
   - Calendario de Actividades
-- Programa de Incentivos
-  - Reglas, desafios, metricas
+- Incentivos
+  - Metricas
   - Badges y recompensas instantaneas
   - Niveles
   - Catalogo de Recompensas
   - Leaderboards & Tableros
-- Gestion de Contenidos
+- Contenidos
 - Microemprendedores
 - Donaciones

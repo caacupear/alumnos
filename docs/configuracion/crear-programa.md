@@ -15,3 +15,29 @@ tags: [secretaria]
 ## Flujo Principal
 
 ## Flujos Alternativos
+
+## Modelo de Datos
+
+```mermaid
+erDiagram
+            Programa__c ||..|{ ProgramaEvaluacion__c : "Evaluaciones de los programas"
+            TipoEvaluacion__c ||..|{ ProgramaEvaluacion__c : "Evaluaciones de los programas"
+            Programa__c ||..|{ Materia__c : "Materias"
+            TipoEvaluacion__c ||..|{ TipoEvaluacionOpcion__c : "Tipo de Evaluacion Opciones"
+
+ProgramaEvaluacion__c {
+            Programa__c Programa__c
+            TipoEvaluacion__c TipoEvaluacion__c
+}
+Materia__c {
+            Programa__c Programa__c
+}
+Programa__c {
+}
+TipoEvaluacion__c {
+}
+TipoEvaluacionOpcion__c {
+            TipoEvaluacion__c TipoEvaluacion__c
+}
+
+```
