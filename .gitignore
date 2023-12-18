@@ -12,6 +12,9 @@
 .localdevserver/
 deploy-options.json
 
+# yarn doc
+**/.object.json
+
 # LWC VSCode autocomplete
 **/lwc/jsconfig.json
 
