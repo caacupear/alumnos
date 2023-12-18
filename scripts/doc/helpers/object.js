@@ -4,6 +4,7 @@ const templateEngine = require("./template")("dictionary", "md");
 const DICTIONARY_FOLDER = process.cwd() + "/docs/diccionarios/objects";
 const WORKING_FOLDER = process.env.INIT_CWD || ".";
 const DEFAULT_FILENAME = ".object.json";
+const DEFAULT_INTRO = "intro";
 const fs = require("fs");
 
 async function getObjects(objetos) {
@@ -196,7 +197,8 @@ async function execute({ items, opciones }) {
   templateEngine.render(objectContext, {
     helpers: { isMetadataFormula, attributesFormula }
   });
-  templateEngine.save("objects", WORKING_FOLDER);
+  const intro = opciones.m ? opciones.m : DEFAULT_INTRO;
+  templateEngine.save(intro, WORKING_FOLDER);
 }
 
 module.exports = {
