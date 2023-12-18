@@ -28,6 +28,16 @@ async function prompt(config) {
     });
     config.items = response.objects;
   }
+
+  if (config.items.length > 1 && !("m" in config.opciones)) {
+    const response = await prompts({
+      type: "string",
+      name: "modulo",
+      initial: "intro",
+      message: "Ingrese nombre archivo Markdown que seria Modulo de los objetos"
+    });
+    config.index = response.index;
+  }
 }
 function descriptionFormula(a) {
   return this.description?.replaceAll(/[\n\r]/g, "<br/>");
@@ -106,7 +116,7 @@ function help() {
     "\nPuede llamarse para un objeto o varios, de la siguiente forma:"
   );
   console.log("npm run doc object Account");
-  console.log("npm run doc object Account Case Contact index.md");
+  console.log("npm run doc object Account Case Contact --=index.md");
 }
 
 function sortByLabel(objA, objB) {
