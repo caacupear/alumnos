@@ -53,11 +53,11 @@ Evaluacion__c {
 
 ### Transaccionales
 
-| #                         | Label                                                  | Api Name        | Descripcion                                     |
-| ------------------------- | ------------------------------------------------------ | --------------- | ----------------------------------------------- |
-| <div class="icons"></div> | [Asistencia](/docs/diccionarios/objects/Asistencia__c) | Asistencia\_\_c | Contiene las asistencias semanales de un alumno |
-| <div class="icons"></div> | [Boletin](/docs/diccionarios/objects/Boletin__c)       | Boletin\_\_c    |                                                 |
-| <div class="icons"></div> | [Evaluacion](/docs/diccionarios/objects/Evaluacion__c) | Evaluacion\_\_c |                                                 |
+| #                         | Label                                             | Api Name        | Descripcion                                     |
+| ------------------------- | ------------------------------------------------- | --------------- | ----------------------------------------------- |
+| <div class="icons"></div> | [Asistencia](/diccionarios/objects/Asistencia__c) | Asistencia\_\_c | Contiene las asistencias semanales de un alumno |
+| <div class="icons"></div> | [Boletin](/diccionarios/objects/Boletin__c)       | Boletin\_\_c    |                                                 |
+| <div class="icons"></div> | [Evaluacion](/diccionarios/objects/Evaluacion__c) | Evaluacion\_\_c |                                                 |
 
 ### Configuracion
 

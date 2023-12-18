@@ -1,7 +1,7 @@
 const sf = require("./connect");
 const prompts = require("prompts");
 const templateEngine = require("./template")("dictionary", "md");
-const DICTIONARY_FOLDER = process.cwd() + "/docs/diccionarios/objects";
+const DICTIONARY_FOLDER = process.cwd() + "/diccionarios/objects";
 const WORKING_FOLDER = process.env.INIT_CWD || ".";
 const DEFAULT_FILENAME = ".object.json";
 const DEFAULT_INTRO = "intro";
@@ -90,7 +90,7 @@ function typeFormula() {
     return `Formula(${this.type})`;
   }
   if (this.type === "Lookup") {
-    return `[Lookup a ${this.referenceTo}](/docs/diccionarios/objects/${this.referenceTo})`;
+    return `[Lookup a ${this.referenceTo}](/diccionarios/objects/${this.referenceTo})`;
   }
 
   if (this.length || this.precision) {

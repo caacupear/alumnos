@@ -37,7 +37,7 @@ erDiagram
 
 {{#each objects}}
 {{#unless (isMetadataFormula this)}}
-| <div class="icons">{{attributesFormula}}</div> | [{{label}}](/docs/diccionarios/objects/{{fullName}}) | {{fullName}} |{{description}}|
+| <div class="icons">{{attributesFormula}}</div> | [{{label}}](/diccionarios/objects/{{fullName}}) | {{fullName}} |{{description}}|
 {{/unless}}
 {{/each}}
 
@@ -48,7 +48,7 @@ erDiagram
 
 {{#each objects}}
 {{#if (isMetadataFormula this)}}
-| <div class="icons">{{attributesFormula}}</div> | [{{label}}](/docs/diccionarios/objects/{{fullName}}) | {{fullName}} |{{description}}|
+| <div class="icons">{{attributesFormula}}</div> | [{{label}}](/diccionarios/objects/{{fullName}}) | {{fullName}} |{{description}}|
 {{/if}}
 {{/each}}
 

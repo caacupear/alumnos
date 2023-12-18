@@ -14,28 +14,28 @@ title: Evaluacion
 
 ## Campos
 
-| #                                                             | Label              | Api Name         | Tipo                                                                                     | Descripcion |
-| ------------------------------------------------------------- | ------------------ | ---------------- | ---------------------------------------------------------------------------------------- | ----------- |
-| <div class="icons"></div>                                     | Alumno             | Alumno\_\_c      | Formula(Text)                                                                            | <ul></ul>   |
-| <div class="icons"></div>                                     | Boletin            | Boletin\_\_c     | MasterDetail                                                                             | <ul></ul>   |
-| <div class="icons"></div>                                     | Conceptual1        | Conceptual1\_\_c | Text(20)                                                                                 | <ul></ul>   |
-| <div class="icons"></div>                                     | Conceptual2        | Conceptual2\_\_c | Text(20)                                                                                 | <ul></ul>   |
-| <div class="icons"></div>                                     | Conceptual3        | Conceptual3\_\_c | Text(20)                                                                                 | <ul></ul>   |
-| <div class="icons"></div>                                     | Conceptual4        | Conceptual4\_\_c | Text(20)                                                                                 | <ul></ul>   |
-| <div class="icons"></div>                                     | Conceptual5        | Conceptual5\_\_c | Text(20)                                                                                 | <ul></ul>   |
-| <div class="icons">![Required](/img/lock_60.png)</div>        | Grilla de Materias | Grilla\_\_c      | [Lookup a Grilla\_\_c](/docs/diccionarios/objects/Grilla__c)                             | <ul></ul>   |
-| <div class="icons"></div>                                     | Materia            | Materia\_\_c     | Formula(Text)                                                                            | <ul></ul>   |
-| <div class="icons"></div>                                     | Nota1              | Nota1\_\_c       | Number(4.2)                                                                              | <ul></ul>   |
-| <div class="icons"></div>                                     | Nota2              | Nota2\_\_c       | Number(4.2)                                                                              | <ul></ul>   |
-| <div class="icons"></div>                                     | Nota3              | Nota3\_\_c       | Number(4.2)                                                                              | <ul></ul>   |
-| <div class="icons"></div>                                     | Nota4              | Nota4\_\_c       | Number(4.2)                                                                              | <ul></ul>   |
-| <div class="icons"></div>                                     | Nota5              | Nota5\_\_c       | Number(4.2)                                                                              | <ul></ul>   |
-| <div class="icons"></div>                                     | Opcion1            | Opcion1\_\_c     | [Lookup a TipoEvaluacionOpcion\_\_c](/docs/diccionarios/objects/TipoEvaluacionOpcion__c) | <ul></ul>   |
-| <div class="icons"></div>                                     | Opcion2            | Opcion2\_\_c     | [Lookup a TipoEvaluacionOpcion\_\_c](/docs/diccionarios/objects/TipoEvaluacionOpcion__c) | <ul></ul>   |
-| <div class="icons"></div>                                     | Opcion3            | Opcion3\_\_c     | [Lookup a TipoEvaluacionOpcion\_\_c](/docs/diccionarios/objects/TipoEvaluacionOpcion__c) | <ul></ul>   |
-| <div class="icons"></div>                                     | Opcion4            | Opcion4\_\_c     | [Lookup a TipoEvaluacionOpcion\_\_c](/docs/diccionarios/objects/TipoEvaluacionOpcion__c) | <ul></ul>   |
-| <div class="icons"></div>                                     | Opcion5            | Opcion5\_\_c     | [Lookup a TipoEvaluacionOpcion\_\_c](/docs/diccionarios/objects/TipoEvaluacionOpcion__c) | <ul></ul>   |
-| <div class="icons">![External Id](/img/database_60.png)</div> | Unique Key         | UniqueKey\_\_c   | Text(40)                                                                                 | <ul></ul>   |
+| #                                                             | Label              | Api Name         | Tipo                                                                                | Descripcion |
+| ------------------------------------------------------------- | ------------------ | ---------------- | ----------------------------------------------------------------------------------- | ----------- |
+| <div class="icons"></div>                                     | Alumno             | Alumno\_\_c      | Formula(Text)                                                                       | <ul></ul>   |
+| <div class="icons"></div>                                     | Boletin            | Boletin\_\_c     | MasterDetail                                                                        | <ul></ul>   |
+| <div class="icons"></div>                                     | Conceptual1        | Conceptual1\_\_c | Text(20)                                                                            | <ul></ul>   |
+| <div class="icons"></div>                                     | Conceptual2        | Conceptual2\_\_c | Text(20)                                                                            | <ul></ul>   |
+| <div class="icons"></div>                                     | Conceptual3        | Conceptual3\_\_c | Text(20)                                                                            | <ul></ul>   |
+| <div class="icons"></div>                                     | Conceptual4        | Conceptual4\_\_c | Text(20)                                                                            | <ul></ul>   |
+| <div class="icons"></div>                                     | Conceptual5        | Conceptual5\_\_c | Text(20)                                                                            | <ul></ul>   |
+| <div class="icons">![Required](/img/lock_60.png)</div>        | Grilla de Materias | Grilla\_\_c      | [Lookup a Grilla\_\_c](/diccionarios/objects/Grilla__c)                             | <ul></ul>   |
+| <div class="icons"></div>                                     | Materia            | Materia\_\_c     | Formula(Text)                                                                       | <ul></ul>   |
+| <div class="icons"></div>                                     | Nota1              | Nota1\_\_c       | Number(4.2)                                                                         | <ul></ul>   |
+| <div class="icons"></div>                                     | Nota2              | Nota2\_\_c       | Number(4.2)                                                                         | <ul></ul>   |
+| <div class="icons"></div>                                     | Nota3              | Nota3\_\_c       | Number(4.2)                                                                         | <ul></ul>   |
+| <div class="icons"></div>                                     | Nota4              | Nota4\_\_c       | Number(4.2)                                                                         | <ul></ul>   |
+| <div class="icons"></div>                                     | Nota5              | Nota5\_\_c       | Number(4.2)                                                                         | <ul></ul>   |
+| <div class="icons"></div>                                     | Opcion1            | Opcion1\_\_c     | [Lookup a TipoEvaluacionOpcion\_\_c](/diccionarios/objects/TipoEvaluacionOpcion__c) | <ul></ul>   |
+| <div class="icons"></div>                                     | Opcion2            | Opcion2\_\_c     | [Lookup a TipoEvaluacionOpcion\_\_c](/diccionarios/objects/TipoEvaluacionOpcion__c) | <ul></ul>   |
+| <div class="icons"></div>                                     | Opcion3            | Opcion3\_\_c     | [Lookup a TipoEvaluacionOpcion\_\_c](/diccionarios/objects/TipoEvaluacionOpcion__c) | <ul></ul>   |
+| <div class="icons"></div>                                     | Opcion4            | Opcion4\_\_c     | [Lookup a TipoEvaluacionOpcion\_\_c](/diccionarios/objects/TipoEvaluacionOpcion__c) | <ul></ul>   |
+| <div class="icons"></div>                                     | Opcion5            | Opcion5\_\_c     | [Lookup a TipoEvaluacionOpcion\_\_c](/diccionarios/objects/TipoEvaluacionOpcion__c) | <ul></ul>   |
+| <div class="icons">![External Id](/img/database_60.png)</div> | Unique Key         | UniqueKey\_\_c   | Text(40)                                                                            | <ul></ul>   |
 
 | #                                                              | Referencia    |
 | -------------------------------------------------------------- | ------------- |

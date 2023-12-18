@@ -14,14 +14,14 @@ title: Boletin
 
 ## Campos
 
-| #                         | Label              | Api Name            | Tipo                                                             | Descripcion |
-| ------------------------- | ------------------ | ------------------- | ---------------------------------------------------------------- | ----------- |
-| <div class="icons"></div> | Alumno             | Alumno\_\_c         | [Lookup a Contact](/docs/diccionarios/objects/Contact)           | <ul></ul>   |
-| <div class="icons"></div> | Asistencia         | Asistencia\_\_c     | Summary                                                          | <ul></ul>   |
-| <div class="icons"></div> | Division           | Division\_\_c       | [Lookup a Division\_\_c](/docs/diccionarios/objects/Division__c) | <ul></ul>   |
-| <div class="icons"></div> | Estado             | Estado\_\_c         | Formula(Text)                                                    | <ul></ul>   |
-| <div class="icons"></div> | Nombre Completo    | nombreAlumno\_\_c   | Formula(Text)                                                    | <ul></ul>   |
-| <div class="icons"></div> | Nombre de Division | nombreDivision\_\_c | Formula(Text)                                                    | <ul></ul>   |
+| #                         | Label              | Api Name            | Tipo                                                        | Descripcion |
+| ------------------------- | ------------------ | ------------------- | ----------------------------------------------------------- | ----------- |
+| <div class="icons"></div> | Alumno             | Alumno\_\_c         | [Lookup a Contact](/diccionarios/objects/Contact)           | <ul></ul>   |
+| <div class="icons"></div> | Asistencia         | Asistencia\_\_c     | Summary                                                     | <ul></ul>   |
+| <div class="icons"></div> | Division           | Division\_\_c       | [Lookup a Division\_\_c](/diccionarios/objects/Division__c) | <ul></ul>   |
+| <div class="icons"></div> | Estado             | Estado\_\_c         | Formula(Text)                                               | <ul></ul>   |
+| <div class="icons"></div> | Nombre Completo    | nombreAlumno\_\_c   | Formula(Text)                                               | <ul></ul>   |
+| <div class="icons"></div> | Nombre de Division | nombreDivision\_\_c | Formula(Text)                                               | <ul></ul>   |
 
 | #                                                              | Referencia    |
 | -------------------------------------------------------------- | ------------- |
