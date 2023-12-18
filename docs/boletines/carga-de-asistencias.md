@@ -1,5 +1,5 @@
 ---
-slug: /asistencias
+sidebar_position: 1
 ---
 
 # Asistencias

@@ -1,0 +1,629 @@
+{
+  "objects": [
+    {
+      "fullName": "Asistencia__c",
+      "actionOverrides": [
+        { "actionName": "Accept", "type": "Default" },
+        { "actionName": "CancelEdit", "type": "Default" },
+        { "actionName": "Clone", "type": "Default" },
+        { "actionName": "Delete", "type": "Default" },
+        { "actionName": "Edit", "type": "Default" },
+        { "actionName": "List", "type": "Default" },
+        { "actionName": "New", "type": "Default" },
+        { "actionName": "SaveEdit", "type": "Default" },
+        { "actionName": "Tab", "type": "Default" },
+        { "actionName": "View", "type": "Default" }
+      ],
+      "allowInChatterGroups": "false",
+      "compactLayoutAssignment": "SYSTEM",
+      "deploymentStatus": "Deployed",
+      "description": "Contiene las asistencias semanales de un alumno",
+      "enableActivities": "false",
+      "enableBulkApi": "true",
+      "enableChangeDataCapture": "false",
+      "enableFeeds": "false",
+      "enableHistory": "false",
+      "enableReports": "false",
+      "enableSearch": "false",
+      "enableSharing": "true",
+      "enableStreamingApi": "true",
+      "externalSharingModel": "ControlledByParent",
+      "fields": [
+        {
+          "fullName": "Asistencia__c",
+          "externalId": "false",
+          "formula": "IF( ISPICKVAL(Lunes__c,'Falto'), 1, IF(ISPICKVAL( Lunes__c,  'Tarde'), 0.5,0))\r\n+IF( ISPICKVAL(Martes__c,'Falto'), 1, IF(ISPICKVAL( Martes__c,  'Tarde'), 0.5,0))\r\n+IF( ISPICKVAL(Miercoles__c,'Falto'), 1, IF(ISPICKVAL( Miercoles__c,  'Tarde'), 0.5,0))\r\n+IF( ISPICKVAL(Jueves__c,'Falto'), 1, IF(ISPICKVAL( Jueves__c,  'Tarde'), 0.5,0))\r\n+IF( ISPICKVAL(Viernes__c,'Falto'), 1, IF(ISPICKVAL( Viernes__c,  'Tarde'), 0.5,0))",
+          "formulaTreatBlanksAs": "BlankAsZero",
+          "label": "Asistencia",
+          "precision": "18",
+          "required": "false",
+          "scale": "1",
+          "trackTrending": "false",
+          "type": "Number",
+          "unique": "false"
+        },
+        {
+          "fullName": "Boletin__c",
+          "externalId": "false",
+          "label": "Boletin",
+          "referenceTo": "Boletin__c",
+          "relationshipLabel": "Asistencias",
+          "relationshipName": "Asistencias",
+          "relationshipOrder": "0",
+          "reparentableMasterDetail": "false",
+          "trackTrending": "false",
+          "type": "MasterDetail",
+          "writeRequiresMasterRead": "false"
+        },
+        {
+          "fullName": "Desde__c",
+          "externalId": "false",
+          "label": "Desde",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Date"
+        },
+        {
+          "fullName": "Hasta__c",
+          "externalId": "false",
+          "formula": "Desde__c + 6",
+          "formulaTreatBlanksAs": "BlankAsZero",
+          "label": "Hasta",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Date"
+        },
+        {
+          "fullName": "Jueves__c",
+          "externalId": "false",
+          "label": "Jueves",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Picklist",
+          "valueSet": { "restricted": "true", "valueSetName": "Asistencia" }
+        },
+        {
+          "fullName": "Lunes__c",
+          "externalId": "false",
+          "label": "Lunes",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Picklist",
+          "valueSet": { "restricted": "true", "valueSetName": "Asistencia" }
+        },
+        {
+          "fullName": "Martes__c",
+          "externalId": "false",
+          "label": "Martes",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Picklist",
+          "valueSet": { "restricted": "true", "valueSetName": "Asistencia" }
+        },
+        {
+          "fullName": "Miercoles__c",
+          "externalId": "false",
+          "label": "Miercoles",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Picklist",
+          "valueSet": { "restricted": "true", "valueSetName": "Asistencia" }
+        },
+        {
+          "fullName": "NombreSemana__c",
+          "externalId": "false",
+          "formula": "\"Semana del \" & TEXT(DAY(Desde__c)) & \"/\" & TEXT(MONTH(Desde__c)) & IF(YEAR(Desde__c)<>YEAR(TODAY()), \"/\" & TEXT(YEAR(Desde__c)), \"\")",
+          "formulaTreatBlanksAs": "BlankAsZero",
+          "label": "Nombre Semana",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "false"
+        },
+        {
+          "fullName": "SemanaText__c",
+          "description": "Este campo es el mismo campo Semana pero en Texto porque el group by no permite que se haga con Numeros",
+          "externalId": "false",
+          "label": "Semana para Agrupar",
+          "length": "2",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "false"
+        },
+        {
+          "fullName": "Semana__c",
+          "description": "Numero de semana del año",
+          "externalId": "false",
+          "inlineHelpText": "Numero de semana del año, acepta valores entre 1 y 54",
+          "label": "Semana",
+          "precision": "2",
+          "required": "true",
+          "scale": "0",
+          "trackTrending": "false",
+          "type": "Number",
+          "unique": "false"
+        },
+        {
+          "fullName": "UniqueKey__c",
+          "caseSensitive": "true",
+          "externalId": "true",
+          "label": "Unique Key",
+          "length": "30",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "true"
+        },
+        {
+          "fullName": "Viernes__c",
+          "externalId": "false",
+          "label": "Viernes",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Picklist",
+          "valueSet": { "restricted": "true", "valueSetName": "Asistencia" }
+        },
+        {
+          "fullName": "ano__c",
+          "defaultValue": "YEAR(Today())",
+          "externalId": "false",
+          "label": "Ano",
+          "precision": "4",
+          "required": "true",
+          "scale": "0",
+          "trackTrending": "false",
+          "type": "Number",
+          "unique": "false"
+        }
+      ],
+      "gender": "Feminine",
+      "label": "Asistencia",
+      "listViews": [
+        {
+          "fullName": "All",
+          "columns": [
+            "Boletin__c",
+            "Semana__c",
+            "Lunes__c",
+            "Martes__c",
+            "Miercoles__c",
+            "Jueves__c",
+            "Viernes__c"
+          ],
+          "filterScope": "Everything",
+          "filters": {
+            "field": "CREATED_DATE",
+            "operation": "equals",
+            "value": "THIS_WEEK"
+          },
+          "label": "Todas"
+        },
+        { "fullName": "All1", "filterScope": "Everything", "label": "All" },
+        {
+          "fullName": "EstaSemana",
+          "columns": [
+            "Boletin__c",
+            "Lunes__c",
+            "Martes__c",
+            "Miercoles__c",
+            "Jueves__c",
+            "Viernes__c"
+          ],
+          "filterScope": "Everything",
+          "filters": [
+            { "field": "Desde__c", "operation": "lessThan", "value": "TODAY" },
+            {
+              "field": "Hasta__c",
+              "operation": "greaterOrEqual",
+              "value": "TODAY"
+            }
+          ],
+          "label": "Esta Semana"
+        }
+      ],
+      "nameField": {
+        "displayFormat": "AS-{DDMMYY}-{0000}",
+        "label": "Nombre de Asistencia",
+        "type": "AutoNumber"
+      },
+      "pluralLabel": "Asistencias",
+      "searchLayouts": "",
+      "sharingModel": "ControlledByParent",
+      "visibility": "Public"
+    },
+    {
+      "fullName": "Boletin__c",
+      "actionOverrides": [
+        { "actionName": "Accept", "type": "Default" },
+        { "actionName": "CancelEdit", "type": "Default" },
+        { "actionName": "Clone", "type": "Default" },
+        { "actionName": "Delete", "type": "Default" },
+        { "actionName": "Edit", "type": "Default" },
+        { "actionName": "List", "type": "Default" },
+        { "actionName": "New", "type": "Default" },
+        { "actionName": "SaveEdit", "type": "Default" },
+        { "actionName": "Tab", "type": "Default" },
+        { "actionName": "View", "type": "Default" }
+      ],
+      "allowInChatterGroups": "false",
+      "compactLayoutAssignment": "SYSTEM",
+      "deploymentStatus": "Deployed",
+      "enableActivities": "false",
+      "enableBulkApi": "true",
+      "enableChangeDataCapture": "false",
+      "enableFeeds": "false",
+      "enableHistory": "false",
+      "enableReports": "false",
+      "enableSearch": "false",
+      "enableSharing": "true",
+      "enableStreamingApi": "true",
+      "externalSharingModel": "Private",
+      "fields": [
+        {
+          "fullName": "Alumno__c",
+          "deleteConstraint": "SetNull",
+          "externalId": "false",
+          "label": "Alumno",
+          "referenceTo": "Contact",
+          "relationshipLabel": "Boletines",
+          "relationshipName": "Boletines",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Lookup"
+        },
+        {
+          "fullName": "Asistencia__c",
+          "externalId": "false",
+          "label": "Asistencia",
+          "summarizedField": "Asistencia__c.Asistencia__c",
+          "summaryForeignKey": "Asistencia__c.Boletin__c",
+          "summaryOperation": "sum",
+          "trackTrending": "false",
+          "type": "Summary"
+        },
+        {
+          "fullName": "Division__c",
+          "deleteConstraint": "SetNull",
+          "externalId": "false",
+          "label": "Division",
+          "referenceTo": "Division__c",
+          "relationshipLabel": "Boletines",
+          "relationshipName": "Boletines",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Lookup"
+        },
+        {
+          "fullName": "Estado__c",
+          "externalId": "false",
+          "formula": "Division__r.estado__c",
+          "formulaTreatBlanksAs": "BlankAsZero",
+          "label": "Estado",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "false"
+        },
+        {
+          "fullName": "nombreAlumno__c",
+          "externalId": "false",
+          "formula": "Alumno__r.FirstName + ' ' + Alumno__r.LastName",
+          "formulaTreatBlanksAs": "BlankAsZero",
+          "label": "Nombre Completo",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "false"
+        },
+        {
+          "fullName": "nombreDivision__c",
+          "externalId": "false",
+          "formula": "Division__r.nombre__c",
+          "formulaTreatBlanksAs": "BlankAsZero",
+          "label": "Nombre de Division",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "false"
+        }
+      ],
+      "gender": "Masculine",
+      "label": "Boletin",
+      "listViews": [
+        {
+          "fullName": "All",
+          "columns": ["NAME", "Division__c", "Asistencia__c"],
+          "filterScope": "Everything",
+          "label": "All"
+        },
+        {
+          "fullName": "Vigentes",
+          "columns": ["NAME", "Division__c", "Asistencia__c"],
+          "filterScope": "Everything",
+          "filters": {
+            "field": "Estado__c",
+            "operation": "equals",
+            "value": "Vigente"
+          },
+          "label": "Vigentes"
+        }
+      ],
+      "nameField": { "label": "Nombre", "type": "Text" },
+      "pluralLabel": "Boletines",
+      "searchLayouts": "",
+      "sharingModel": "ReadWrite",
+      "visibility": "Public"
+    },
+    {
+      "fullName": "Evaluacion__c",
+      "actionOverrides": [
+        { "actionName": "Accept", "type": "Default" },
+        { "actionName": "CancelEdit", "type": "Default" },
+        { "actionName": "Clone", "type": "Default" },
+        { "actionName": "Delete", "type": "Default" },
+        { "actionName": "Edit", "type": "Default" },
+        { "actionName": "List", "type": "Default" },
+        { "actionName": "New", "type": "Default" },
+        { "actionName": "SaveEdit", "type": "Default" },
+        { "actionName": "Tab", "type": "Default" },
+        { "actionName": "View", "type": "Default" }
+      ],
+      "allowInChatterGroups": "false",
+      "compactLayoutAssignment": "SYSTEM",
+      "deploymentStatus": "Deployed",
+      "enableActivities": "false",
+      "enableBulkApi": "true",
+      "enableChangeDataCapture": "false",
+      "enableFeeds": "false",
+      "enableHistory": "false",
+      "enableReports": "false",
+      "enableSearch": "false",
+      "enableSharing": "true",
+      "enableStreamingApi": "true",
+      "externalSharingModel": "ControlledByParent",
+      "fields": [
+        {
+          "fullName": "Alumno__c",
+          "externalId": "false",
+          "formula": "Boletin__r.Alumno__r.Nombre__c",
+          "formulaTreatBlanksAs": "BlankAsZero",
+          "label": "Alumno",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "false"
+        },
+        {
+          "fullName": "Boletin__c",
+          "externalId": "false",
+          "label": "Boletin",
+          "referenceTo": "Boletin__c",
+          "relationshipLabel": "Evaluaciones",
+          "relationshipName": "Evaluaciones",
+          "relationshipOrder": "0",
+          "reparentableMasterDetail": "false",
+          "trackTrending": "false",
+          "type": "MasterDetail",
+          "writeRequiresMasterRead": "false"
+        },
+        {
+          "fullName": "Conceptual1__c",
+          "externalId": "false",
+          "label": "Conceptual1",
+          "length": "20",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "false"
+        },
+        {
+          "fullName": "Conceptual2__c",
+          "externalId": "false",
+          "label": "Conceptual2",
+          "length": "20",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "false"
+        },
+        {
+          "fullName": "Conceptual3__c",
+          "externalId": "false",
+          "label": "Conceptual3",
+          "length": "20",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "false"
+        },
+        {
+          "fullName": "Conceptual4__c",
+          "externalId": "false",
+          "label": "Conceptual4",
+          "length": "20",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "false"
+        },
+        {
+          "fullName": "Conceptual5__c",
+          "externalId": "false",
+          "label": "Conceptual5",
+          "length": "20",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "false"
+        },
+        {
+          "fullName": "Grilla__c",
+          "deleteConstraint": "Restrict",
+          "externalId": "false",
+          "label": "Grilla de Materias",
+          "referenceTo": "Grilla__c",
+          "relationshipLabel": "Evaluaciones",
+          "relationshipName": "Evaluaciones",
+          "required": "true",
+          "trackTrending": "false",
+          "type": "Lookup"
+        },
+        {
+          "fullName": "Materia__c",
+          "externalId": "false",
+          "formula": "Grilla__r.Materia__r.Name",
+          "formulaTreatBlanksAs": "BlankAsZero",
+          "label": "Materia",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "false"
+        },
+        {
+          "fullName": "Nota1__c",
+          "externalId": "false",
+          "label": "Nota1",
+          "precision": "4",
+          "required": "false",
+          "scale": "2",
+          "trackTrending": "false",
+          "type": "Number",
+          "unique": "false"
+        },
+        {
+          "fullName": "Nota2__c",
+          "externalId": "false",
+          "label": "Nota2",
+          "precision": "4",
+          "required": "false",
+          "scale": "2",
+          "trackTrending": "false",
+          "type": "Number",
+          "unique": "false"
+        },
+        {
+          "fullName": "Nota3__c",
+          "externalId": "false",
+          "label": "Nota3",
+          "precision": "4",
+          "required": "false",
+          "scale": "2",
+          "trackTrending": "false",
+          "type": "Number",
+          "unique": "false"
+        },
+        {
+          "fullName": "Nota4__c",
+          "externalId": "false",
+          "label": "Nota4",
+          "precision": "4",
+          "required": "false",
+          "scale": "2",
+          "trackTrending": "false",
+          "type": "Number",
+          "unique": "false"
+        },
+        {
+          "fullName": "Nota5__c",
+          "externalId": "false",
+          "label": "Nota5",
+          "precision": "4",
+          "required": "false",
+          "scale": "2",
+          "trackTrending": "false",
+          "type": "Number",
+          "unique": "false"
+        },
+        {
+          "fullName": "Opcion1__c",
+          "deleteConstraint": "SetNull",
+          "externalId": "false",
+          "label": "Opcion1",
+          "referenceTo": "TipoEvaluacionOpcion__c",
+          "relationshipLabel": "Evaluaciones",
+          "relationshipName": "Evaluaciones",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Lookup"
+        },
+        {
+          "fullName": "Opcion2__c",
+          "deleteConstraint": "SetNull",
+          "externalId": "false",
+          "label": "Opcion2",
+          "referenceTo": "TipoEvaluacionOpcion__c",
+          "relationshipLabel": "Evaluaciones (Opcion2)",
+          "relationshipName": "Evaluaciones1",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Lookup"
+        },
+        {
+          "fullName": "Opcion3__c",
+          "deleteConstraint": "SetNull",
+          "externalId": "false",
+          "label": "Opcion3",
+          "referenceTo": "TipoEvaluacionOpcion__c",
+          "relationshipLabel": "Evaluaciones (Opcion3)",
+          "relationshipName": "Evaluaciones3",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Lookup"
+        },
+        {
+          "fullName": "Opcion4__c",
+          "deleteConstraint": "SetNull",
+          "externalId": "false",
+          "label": "Opcion4",
+          "referenceTo": "TipoEvaluacionOpcion__c",
+          "relationshipLabel": "Evaluaciones (Opcion4)",
+          "relationshipName": "Evaluaciones4",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Lookup"
+        },
+        {
+          "fullName": "Opcion5__c",
+          "deleteConstraint": "SetNull",
+          "externalId": "false",
+          "label": "Opcion5",
+          "referenceTo": "TipoEvaluacionOpcion__c",
+          "relationshipLabel": "Evaluaciones (Opcion5)",
+          "relationshipName": "Evaluaciones5",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Lookup"
+        },
+        {
+          "fullName": "UniqueKey__c",
+          "caseSensitive": "true",
+          "externalId": "true",
+          "label": "Unique Key",
+          "length": "40",
+          "required": "false",
+          "trackTrending": "false",
+          "type": "Text",
+          "unique": "true"
+        }
+      ],
+      "gender": "Feminine",
+      "label": "Evaluacion",
+      "listViews": {
+        "fullName": "All",
+        "filterScope": "Everything",
+        "label": "All"
+      },
+      "nameField": {
+        "displayFormat": "EV# {00000000}",
+        "label": "Name",
+        "type": "AutoNumber"
+      },
+      "pluralLabel": "Evaluaciones",
+      "searchLayouts": "",
+      "sharingModel": "ControlledByParent",
+      "visibility": "Public"
+    },
+    {}
+  ]
+}

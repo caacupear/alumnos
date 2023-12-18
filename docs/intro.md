@@ -14,7 +14,7 @@ slug: /
 
 ```mermaid
 mindmap
-  root((Gestion))
+  ((Gestion))
     Comunidad
     Incentivos
     Contenidos
@@ -23,10 +23,6 @@ mindmap
 ```
 
 - Gestion
-  - Configuración
-  - Inscripción
-  - Asistencias
-  - Evaluaciones
 - Comunidad
   - Calendario de Actividades
 - Incentivos

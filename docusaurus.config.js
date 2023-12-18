@@ -72,15 +72,9 @@ export default {
           },
           {
             type: "docSidebar",
-            sidebarId: "asistencias",
+            sidebarId: "boletines",
             position: "left",
-            label: "Asistencias"
-          },
-          {
-            type: "docSidebar",
-            sidebarId: "evaluaciones",
-            position: "left",
-            label: "Evaluaciones"
+            label: "Boletines"
           },
           {
             type: "docSidebar",

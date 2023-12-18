@@ -1,8 +1,8 @@
 ---
-slug: /evaluaciones
+sidebar_position: 2
 ---
 
-# Evaluaciones
+# Alta de Evaluaciones
 
 ## Objetivos
 

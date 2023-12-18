@@ -106,7 +106,7 @@ function help() {
     "\nPuede llamarse para un objeto o varios, de la siguiente forma:"
   );
   console.log("npm run doc object Account");
-  console.log("npm run doc object Account Case Contact");
+  console.log("npm run doc object Account Case Contact index.md");
 }
 
 function sortByLabel(objA, objB) {
