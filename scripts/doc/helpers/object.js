@@ -1,7 +1,7 @@
 const sf = require("./connect");
 const prompts = require("prompts");
 const templateEngine = require("./template")("dictionary", "md");
-const DICTIONARY_FOLDER = process.cwd() + "/diccionarios/objects";
+const DICTIONARY_FOLDER = process.cwd() + "/docs/diccionarios/objects";
 const WORKING_FOLDER = process.env.INIT_CWD || ".";
 const DEFAULT_FILENAME = ".object.json";
 const DEFAULT_INTRO = "intro";
@@ -32,7 +32,7 @@ async function prompt(config) {
 
   if (config.items.length > 1 && !("m" in config.opciones)) {
     const response = await prompts({
-      type: "string",
+      type: "text",
       name: "modulo",
       initial: "intro",
       message: "Ingrese nombre archivo Markdown que seria Modulo de los objetos"
@@ -42,6 +42,10 @@ async function prompt(config) {
 }
 function descriptionFormula(a) {
   return this.description?.replaceAll(/[\n\r]/g, "<br/>");
+}
+
+function isManaged() {
+  return this.fullName.split("__").length == 3;
 }
 
 function isMetadataFormula() {
@@ -149,7 +153,8 @@ async function getContext(items, opciones) {
 
   // flag -i lee del archivo cache
   if (opciones && "i" in opciones) {
-    contexts = getContextCache(opciones.i);
+    const allObjects = getContextCache(opciones.i);
+    contexts = allObjects.filter((object) => items.includes(object.fullName));
   } else if (opciones && "r" in opciones) {
     // flag -r lee del archivo cache pero vuelve a buscar la metadata
     contexts = getContextCache(opciones.r);
@@ -160,7 +165,7 @@ async function getContext(items, opciones) {
     contexts = await getObjects(items);
   }
 
-  if (!Array.isArray(contexts)) {
+  if (contexts && !Array.isArray(contexts)) {
     contexts = [contexts];
   }
   return contexts;
@@ -177,11 +182,10 @@ async function execute({ items, opciones }) {
   templateEngine.read("object");
   for (const context of contexts) {
     templateEngine.render(context, {
-      helpers: { descriptionFormula, typeFormula, attributesFormula }
+      helpers: { isManaged, descriptionFormula, typeFormula, attributesFormula }
     });
     templateEngine.save(context.fullName, DICTIONARY_FOLDER);
   }
-
   // Arma el documento indice del grupo de objetos
   contexts.sort(sortByLabel);
   templateEngine.read("objects");
@@ -195,7 +199,7 @@ async function execute({ items, opciones }) {
     );
   }
   templateEngine.render(objectContext, {
-    helpers: { isMetadataFormula, attributesFormula }
+    helpers: { isManaged, isMetadataFormula, attributesFormula }
   });
   const intro = opciones.m ? opciones.m : DEFAULT_INTRO;
   templateEngine.save(intro, WORKING_FOLDER);

@@ -35,7 +35,7 @@ export default {
           // Remove this to remove the "edit this page" links.
           editUrl: "https://github.com/caacupear/alumnos/tree/main"
         },
-        blog: false
+        blog: false,
         // blog: {
         //   showReadingTime: true,
         //   readingTime: ({content, frontMatter, defaultReadingTime}) =>
@@ -45,6 +45,9 @@ export default {
         //   editUrl:
         //     'https://github.com/caacupear/alumnos/tree/main',
         // },
+        theme: {
+          customCss: require.resolve("./docs/custom.css")
+        }
       })
     ]
   ],

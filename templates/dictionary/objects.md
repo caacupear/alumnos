@@ -12,18 +12,22 @@ title: Modelo de datos
 erDiagram
 {{#each objects}}
     {{#each fields}}
+        {{#unless (isManaged this)}}
         {{#if referenceTo}}
             {{referenceTo}} ||..|{ {{../fullName}} : "{{relationshipLabel}}"
         {{/if}}
+        {{/unless}}
     {{/each}}
 {{/each}}
 
 {{#each objects}}
 {{fullName}} {
     {{#each fields}}
+        {{#unless (isManaged this)}}
         {{#if referenceTo}}
             {{fullName}} {{referenceTo}}
         {{/if}}
+        {{/unless}}
     {{/each}}
 }
 {{/each}}

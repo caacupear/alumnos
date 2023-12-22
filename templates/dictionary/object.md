@@ -20,7 +20,9 @@ title: { { label } }
 | --- | ----- | -------- | ---- | ----------- |
 
 {{#each fields}}
+{{#unless (isManaged this)}}
 | <div class="icons">{{attributesFormula}}</div> | {{label}} | {{fullName}} | {{typeFormula}} | {{descriptionFormula}} <ul>{{#each valueSet.valueSetDefinition.value}}<li>{{label}}</li>{{/each}}</ul> |
+{{/unless}}
 {{/each}}
 
 | #                                                              | Referencia    |
