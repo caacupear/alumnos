@@ -82,7 +82,6 @@ async function execute({ componente, argumentos }) {
         componente === "new"
           ? newArgument(argumentos)
           : dictionaryArguments(argumentos);
-
       if (typeof helper.prompt === "function") {
         await helper.prompt(config);
       }

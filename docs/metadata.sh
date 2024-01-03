@@ -1,3 +1,6 @@
+#!/bin/bash
+# Script crea los intro de cada modulo. Y si se lo llama con refresh baja primero la metadata.
+# Cada vez que se agrega metadata deberia de correr de vuelta este script como "metadata refresh" para que se actualicen los intros y el cache de metadata
 
 ## GENERADOR DE OBJECTS
 
