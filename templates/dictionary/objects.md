@@ -38,7 +38,6 @@ erDiagram
 
 | #   | Label | Api Name | Descripcion |
 | --- | ----- | -------- | ----------- |
-
 {{#each objects}}
 {{#unless (isMetadataFormula this)}}
 | <div class="icons">{{attributesFormula}}</div> | [{{label}}](/diccionarios/objects/{{fullName}}) | {{fullName}} |{{description}}|
