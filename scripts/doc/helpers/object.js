@@ -1,10 +1,14 @@
 const sf = require("./connect");
 const prompts = require("prompts");
 const templateEngine = require("./template")("dictionary", "md");
-const DICTIONARY_FOLDER = process.cwd() + "/docs/diccionarios/objects";
-const WORKING_FOLDER = process.env.INIT_CWD || ".";
+const {
+  getContextCache,
+  sortByLabel,
+  DICTIONARY_FOLDER,
+  WORKING_FOLDER,
+  DEFAULT_INTRO
+} = require("./util");
 const DEFAULT_FILENAME = ".object.json";
-const DEFAULT_INTRO = "intro";
 const fs = require("fs");
 
 async function getObjects(objetos) {
@@ -124,40 +128,18 @@ function help() {
   console.log("npm run doc object Account Case Contact --=index.md");
 }
 
-function sortByLabel(objA, objB) {
-  return objA.label > objB.label ? 1 : objA.label < objB.label ? -1 : 0;
-}
-
-function getContextCache(fileName) {
-  const fullName =
-    fileName !== undefined
-      ? WORKING_FOLDER + "/" + fileName
-      : WORKING_FOLDER + "/" + DEFAULT_FILENAME;
-  if (!fs.existsSync(fullName)) {
-    throw new Error(
-      `No existe el archivo ${fullName}. Debe ser un json generado por el flag -o`
-    );
-  }
-  const content = fs.readFileSync(fullName);
-  try {
-    return JSON.parse(content).objects;
-  } catch {
-    throw new Error(
-      "Archivo invalido: el  ${fileName} debe ser un json generado por el flag -o"
-    );
-  }
-}
-
 async function getContext(items, opciones) {
   let contexts;
 
   // flag -i lee del archivo cache
   if (opciones && "i" in opciones) {
-    const allObjects = getContextCache(opciones.i);
+    const allObjects = getContextCache(
+      opciones.i ? opciones.i : DEFAULT_FILENAME
+    );
     contexts = allObjects.filter((object) => items.includes(object.fullName));
   } else if (opciones && "r" in opciones) {
     // flag -r lee del archivo cache pero vuelve a buscar la metadata
-    contexts = getContextCache(opciones.r);
+    contexts = getContextCache(opciones.r ? opciones.r : DEFAULT_FILENAME);
     const itemsEnCache = contexts.map((object) => object.fullName);
     contexts = await getObjects(itemsEnCache);
   } else {
@@ -178,6 +160,7 @@ async function execute({ items, opciones }) {
   if (!contexts || contexts.length === 0) {
     return;
   }
+
   // Arma el diccionario de cada Objeto
   templateEngine.read("object");
   for (const context of contexts) {
