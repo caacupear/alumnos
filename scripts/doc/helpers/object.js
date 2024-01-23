@@ -2,13 +2,15 @@ const sf = require("./connect");
 const prompts = require("prompts");
 const templateEngine = require("./template")("dictionary", "md");
 const {
-  getContextCache,
+  getObjectsCache,
+  setObjectsCache,
   sortByLabel,
   DICTIONARY_FOLDER,
+  DOCS_FOLDER,
   WORKING_FOLDER,
   DEFAULT_INTRO
 } = require("./util");
-const DEFAULT_FILENAME = ".object.json";
+const DEFAULT_FILENAME = DOCS_FOLDER + ".object.json";
 const fs = require("fs");
 
 async function getObjects(objetos) {
@@ -133,13 +135,13 @@ async function getContext(items, opciones) {
 
   // flag -i lee del archivo cache
   if (opciones && "i" in opciones) {
-    const allObjects = getContextCache(
+    const allObjects = getObjectsCache(
       opciones.i ? opciones.i : DEFAULT_FILENAME
     );
     contexts = allObjects.filter((object) => items.includes(object.fullName));
   } else if (opciones && "r" in opciones) {
     // flag -r lee del archivo cache pero vuelve a buscar la metadata
-    contexts = getContextCache(opciones.r ? opciones.r : DEFAULT_FILENAME);
+    contexts = getObjectsCache(opciones.r ? opciones.r : DEFAULT_FILENAME);
     const itemsEnCache = contexts.map((object) => object.fullName);
     contexts = await getObjects(itemsEnCache);
   } else {
@@ -167,20 +169,20 @@ async function execute({ items, opciones }) {
     templateEngine.render(context, {
       helpers: { isManaged, descriptionFormula, typeFormula, attributesFormula }
     });
-    templateEngine.save(context.fullName, DICTIONARY_FOLDER);
+    templateEngine.save(context.fullName, DICTIONARY_FOLDER + "/objects");
   }
   // Arma el documento indice del grupo de objetos
   contexts.sort(sortByLabel);
   templateEngine.read("objects");
-  const objectContext = { objects: contexts };
 
   if ("o" in opciones) {
-    const fileName = opciones.o ? opciones.o : DEFAULT_FILENAME;
-    fs.writeFileSync(
-      WORKING_FOLDER + "/" + fileName,
-      JSON.stringify(objectContext)
-    );
+    const fileName = opciones.o
+      ? WORKING_FOLDER + "/" + opciones.o
+      : DEFAULT_FILENAME;
+    setObjectsCache(fileName, contexts);
   }
+
+  const objectContext = { objects: contexts };
   templateEngine.render(objectContext, {
     helpers: { isManaged, isMetadataFormula, attributesFormula }
   });

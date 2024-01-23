@@ -12,6 +12,27 @@ function isObjectEmpty(objectName) {
   );
 }
 
+// Abre el archivo, y antes de devolver el contenido busca si tiene tags {{import subarchivos}} y los incorpora al mismo
+function openTemplate(sourceFolder, templateName, extension) {
+  const source = `${sourceFolder}/${templateName}.${extension}`;
+  let content = fs.readFileSync(source, "utf8");
+  const regexp = /{{[ ]*(import)[ ]*([^}]+)}}/gi;
+  const matches = content.matchAll(regexp);
+  if (matches !== null) {
+    for (const match of matches) {
+      const [subfile, subextension] = match[2].trim().split(".");
+      const subcontent = openTemplate(
+        sourceFolder,
+        subfile,
+        subextension || extension
+      );
+      content = content.replace(match[0], subcontent);
+    }
+  }
+
+  return content;
+}
+
 function getFiles(source) {
   const files = [];
   for (const file of fs.readdirSync(source)) {
@@ -47,8 +68,7 @@ module.exports = (source, extension) => {
       return templates;
     },
     read: (templateName) => {
-      const source = `${sourceFolder}/${templateName}.${extension}`;
-      const rawTemplate = fs.readFileSync(source, "utf8");
+      const rawTemplate = openTemplate(sourceFolder, templateName, extension);
       this._template = Handlebars.compile(rawTemplate);
     },
     render: (context, options) => {
@@ -58,10 +78,14 @@ module.exports = (source, extension) => {
       this._rendered = this._template(context, options);
     },
 
-    save: (filename, folder) => {
+    save: (filename, folder, options = {}) => {
       let accion = "creo";
       if (folder && !fs.existsSync(folder)) {
-        throw new Error(`La carpeta ${folder} no existe!`);
+        if (options.create) {
+          fs.mkdirSync(folder);
+        } else {
+          throw new Error(`La carpeta ${folder} no existe!`);
+        }
       }
       if (!filename.endsWith("." + extension)) {
         filename += "." + extension;

@@ -39,6 +39,34 @@ function check() {
   return conn.accessToken ? true : false;
 }
 
+async function getClasses(fullNames) {
+  try {
+    // > tooling.sobject('ApexClass').find({ Name: "AsistenciasController" })
+    const classNames = fullNames.map((clase) => clase.replace(".cls", ""));
+    const metadata = await conn.tooling
+      .sobject("ApexClass")
+      .find({ Name: classNames }, [
+        "Name",
+        "Status",
+        "IsValid",
+        "ApiVersion",
+        "CreatedDate",
+        "LastModifiedDate",
+        "SymbolTable"
+      ]);
+
+    if (DEBUG) {
+      console.log(JSON.stringify(metadata));
+    }
+    return metadata;
+  } catch (e) {
+    if (DEBUG) {
+      console.log(e);
+    }
+    throw `Error buscando metadata de las clases ${fullNames}`;
+  }
+}
+
 async function customObjects(fullNames) {
   try {
     let metadata;
@@ -65,4 +93,4 @@ async function customObjects(fullNames) {
   }
 }
 
-module.exports = { connect, check, customObjects };
+module.exports = { connect, check, customObjects, getClasses };
