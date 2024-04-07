@@ -55,6 +55,7 @@ public with sharing class TestConstanciaHelper {
   static void testGeneratePDF() {
     Constancia__c constancia = TestDataFactory.getConstancias().get('C-1');
     Contact contacto = TestDataFactory.getAlumnos().get('A-1');
+    TestDataFactory.getBoletines();
     Test.startTest();
     ContentVersion content = ConstanciaHelper.generatePDF(
       constancia.Id,
