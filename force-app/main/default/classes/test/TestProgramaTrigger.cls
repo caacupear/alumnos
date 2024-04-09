@@ -18,6 +18,10 @@ public class TestProgramaTrigger {
     Test.stopTest();
   }
 
+  public static Map<String, Programa__c> getProgramas() {
+    return TestDataFactory.getProgramas();
+  }
+
   @IsTest
   static void testValidateHeaderYFooterOk() {
     Programa__c programa = TestDataFactory.makeProgramas(false, 1)

@@ -5,7 +5,7 @@
   "description": "Salesforce App",
   "scripts": {
     "lint": "eslint **/{aura,lwc}/**",
-    "test": "npm run test:unit",
+    "test": "yarn test:unit",
     "start": "docusaurus start",
     "build": "docusaurus build",
     "test:unit": "sfdx-lwc-jest",
