@@ -145,7 +145,7 @@ public with sharing class ConstanciaHelper {
     }
 
     for (String key : mapVarValues.keySet()) {
-      String value = mapVarValues.containsKey(key)
+      String value = mapVarValues.get(key) != null
         ? String.valueOf(mapVarValues.get(key))
         : '';
       contentido = contentido.replace(key, value);
