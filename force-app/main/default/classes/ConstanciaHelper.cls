@@ -258,7 +258,9 @@ public with sharing class ConstanciaHelper {
     // TODO: Performance el query al contact y program podria hacerlo una vez y no dos
     Map<String, String> mapRecordId = getMapRecordId(idContact);
     if (mapRecordId.get('programa') == null) {
-      throw new Exception('El contacto no tiene un programa asociado');
+      throw new ApplicationException(
+        'El contacto no tiene un programa asociado'
+      );
     }
     // Obtiene Header y Footer del Programa
     Programa__c programa = [
