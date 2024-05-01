@@ -15,6 +15,7 @@ public with sharing class ConstanciaHelper {
         Date hoy = Date.today();
         formulasVal = new Map<String, String>{
           'fecha' => hoy.format(),
+          'fecha_largo' => WeekHelper.getFullDate(hoy),
           'hoy_dia' => String.valueOf(hoy.day()),
           'hoy_mes' => String.valueOf(hoy.month()),
           'hoy_anio' => String.valueOf(hoy.year()),
