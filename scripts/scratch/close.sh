@@ -13,6 +13,10 @@
 # Corre test de apex
 # sf apex run test --test-level RunLocalTests --synchronous
 
+# Genera el package.xml
+#sf sgd:source:delta --to "HEAD" --from "HEAD^" --output .
+
+
 current_branch=$(git branch --show-current)
 # Baja lo ultimo de main 
 
