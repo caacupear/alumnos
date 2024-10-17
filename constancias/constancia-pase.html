@@ -1,0 +1,112 @@
+<table
+  dir="ltr"
+  style="font-size: 12pt; font-family: Calibri; border: 1px solid white"
+>
+  <tbody>
+    <tr
+      style="
+        height: 20pt;
+        text-align: center;
+        font-weight: bold;
+        font-size: 18pt;
+      "
+    >
+      <td colspan="8">CONSTANCIA PASE</td>
+    </tr>
+    <tr style="height: 20px">
+      <td colspan="4"></td>
+      <td colspan="4" style="line-height: 3rem; text-align: right">
+        Ciudad Autónoma de Buenos Aires,
+        <div style="text-decoration: underline; display: inline">{hoy_dia}</div>
+        de
+        <div style="text-decoration: underline; display: inline">
+          {hoy_mes_largo}
+        </div>
+        de
+        <div style="text-decoration: underline; display: inline">
+          {hoy_anio}
+        </div>
+      </td>
+    </tr>
+    <tr style="height: 1rem">
+      <td colspan="8">
+        Se deja constancia que,
+        <div
+          style="font-weight: bold; text-decoration: underline; display: inline"
+        >
+          {lastname} {firstname}
+        </div>
+      </td>
+    </tr>
+    <tr style="height: 1rem">
+      <td colspan="8">
+        que acredita identidad con <b>DNI</b> número
+        <div
+          style="font-weight: bold; text-decoration: underline; display: inline"
+        >
+          {Documento__c}
+        </div>
+        Curso en este establecimiento el
+        <div style="text-decoration: underline; display: inline">
+          {division.anoEscolar__c}
+        </div>
+        año (Incompleto - Completo), en el ciclo escolar
+        <div style="text-decoration: underline; display: inline">
+          {ciclo.Name}
+        </div>
+      </td>
+    </tr>
+    <tr style="height: 1rem">
+      <td colspan="8">
+        PLAN DE ESTUDIO (**) Correspondiente al 1er año del 2d0 Ciclo del plan:
+        Bachiller en Ciencias Sociales y Humanidades (RES Nº 321/MEGC/15 Y
+        1189/MEGC/15 Y RES Nº 156/SSPLINED/18).
+      </td>
+    </tr>
+    <tr style="height: 1rem">
+      <td colspan="8">DATOS COMPLEMENTARIOS</td>
+    </tr>
+    <tr style="height: 1rem">
+      <td colspan="8">{NotasPase__c}</td>
+    </tr>
+    <tr style="height: 2rem"></tr>
+    <tr style="height: 1rem">
+      <td colspan="8">
+        Se deja constancia que a la fecha de emisión del presente, el/la
+        estudiante SI/NO promociono
+        <div style="text-decoration: underline; display: inline">
+          {division.anoEscolar__c}
+        </div>
+        año corresponde al plan de de estudios indicado arriba (**). En el caso
+        de que la escuela a la que pasa el/la estudiante implemente un plan de
+        estudios correspondiente a otra modalidad, la escuela de destino deberá
+        resolver su matriculación y definición de asignaturas pendientes, de
+        acuerdo a lo establecido por la Resol-970-2022-MEDGC | Título IX
+        Movilidad Estudiantil
+      </td>
+    </tr>
+    <tr style="height: 1rem">
+      <td colspan="8">
+        Se extiende la presente constancia en la Ciudad Autónoma de Buenos
+        Aires, el día {fecha_largo} a pedido del interesado y al só efecto de
+        ser presentado ante las autoridades del
+      </td>
+    </tr>
+    <tr style="height: 1rem; text-align: center">
+      <td colspan="8">{NombreEscuelaPase__c}</td>
+    </tr>
+    <tr style="height: 2rem"></tr>
+    <tr style="height: 20pt; text-align: center">
+      <td colspan="8">
+        <div style="position: relative; top: 1rem"></div>
+        <div>
+          <img
+            style="width: 400px"
+            src="https://caacupe--c.vf.force.com/resource/1718316782000/logoConFirma"
+            alt="firma-gabi.png"
+          />
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

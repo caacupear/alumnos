@@ -17,6 +17,7 @@ public with sharing class ConstanciaHelper {
           'fecha' => hoy.format(),
           'fecha_largo' => WeekHelper.getFullDate(hoy),
           'hoy_dia' => String.valueOf(hoy.day()),
+          'hoy_mes_largo' => WeekHelper.labelMeses.get(hoy.month()),
           'hoy_mes' => String.valueOf(hoy.month()),
           'hoy_anio' => String.valueOf(hoy.year()),
           'pagenumber' => '<span class="pagenumber"/>',
@@ -141,7 +142,10 @@ public with sharing class ConstanciaHelper {
       if (objeto == 'formulas') {
         mapVarValues.put(key, formulas.get(variable));
       } else {
-        mapVarValues.put(key, objects.get(objeto).get(variable));
+        mapVarValues.put(
+          key,
+          String.valueOf(objects.get(objeto).get(variable))
+        );
       }
     }
 

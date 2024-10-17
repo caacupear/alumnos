@@ -1,5 +1,5 @@
 public class WeekHelper {
-  static Map<Integer, String> labelMeses = new Map<Integer, String>{
+  public static Map<Integer, String> labelMeses = new Map<Integer, String>{
     1 => 'Enero',
     2 => 'Febrero',
     3 => 'Marzo',
@@ -13,7 +13,7 @@ public class WeekHelper {
     11 => 'Noviembre',
     12 => 'Diciembre'
   };
-  static Map<Integer, String> labelDias = new Map<Integer, String>{
+  public static Map<Integer, String> labelDias = new Map<Integer, String>{
     0 => 'Domingo',
     1 => 'Lunes',
     2 => 'Martes',
